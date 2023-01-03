@@ -1,5 +1,5 @@
 """
-Fetch country information from Chess.com API and save it to csv file
+Fetch country information from Chess.com API and save it to csv file.
 """
 
 from app.helpers.iso_codes import ISO_CODES
