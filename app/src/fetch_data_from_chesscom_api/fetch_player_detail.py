@@ -18,20 +18,20 @@ class FetchPlayerDetail(FetchBase):
         self.players = pd.read_csv(os.path.join(DATA_DIR, PLAYERS_FILENAME))
 
     def fetch_data(self):
-        players = []
+        player_details = []
         for username in self.players['username']:
             print(username)
-            players.append(self.fetch_item(PLAYER_PROFILE_ENDPOINT.format(username=username)))
-        player_details = pd.DataFrame.from_dict(players)
-        player_details.drop(
+            player_details.append(self.fetch_item(PLAYER_PROFILE_ENDPOINT.format(username=username)))
+        player_details_df = pd.DataFrame.from_dict(player_details)
+        player_details_df.drop(
             columns=['location', 'is_streamer', 'twitch_url', 'verified', 'title', 'name', 'avatar'],
             axis=1,
             inplace=True,
             errors='ignore'
         )
-        player_details.rename(columns={"country": "country_@id"}, inplace=True)
+        player_details_df.rename(columns={"country": "country_@id"}, inplace=True)
         self.dataframe = pd.merge(
-            player_details,
+            player_details_df,
             self.players,
             how='left',
             on='username'
