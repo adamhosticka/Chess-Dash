@@ -29,29 +29,30 @@ class FetchGame(FetchBase):
             for archive in archives_item['archives'][-self.LAST_X_ARCHIVES:]:
                 games_item = self.fetch_item(archive)
                 games.extend(games_item['games'])
-        games_df = pd.DataFrame.from_dict(games)
-        self.reformat_games_df(games_df)
+        games_df = pd.json_normalize(games, sep='_')
+        games_df = self.reformat_games_df(games_df)
         self.dataframe = games_df
         print("GamesCount", len(self.dataframe))
 
     @staticmethod
-    def reformat_games_df(games_df: pd.DataFrame):
-        """Reformat games DataFrame for better working with its data
+    def reformat_games_df(games_df: pd.DataFrame) -> pd.DataFrame:
+        """Reformat games DataFrame for better working with its data.
 
-        Inspired/copied from https://www.kaggle.com/code/adityajha1504/those-features-won-t-engineer-themselves/notebook
+        Inspired/copied from
+        https://www.kaggle.com/code/adityajha1504/those-features-won-t-engineer-themselves/notebook.
 
-        :param pd.DataFrame games_df: DataFrame to reformat
+        :param pd.DataFrame games_df: DataFrame to reformat.
+
+        :return: Reformated dataframe.
+        :rtype: pd.DataFrame.
         """
 
-        players = ['white', 'black']
-        attributes = ['rating', 'result', 'username']
-        for player in players:
-            for attribute in attributes:
-                games_df[f"{player}_{attribute}"] = games_df[player].apply(
-                    lambda x: x.get(attribute)
-                )
+        games_df = games_df[games_df['rules'] == 'chess']
 
-        games_df.drop(columns=["tcn", "start_time", "end_time", "white", "black"], inplace=True)
+        games_df.drop(
+            columns=["tcn", "start_time", "end_time", "rules", "tournament", "match", "white_@id", "black_@id",
+                     "white_uuid", "black_uuid"],
+            inplace=True, errors='ignore')
 
         games_df.dropna(axis=0, subset=['pgn'], inplace=True)
         feature_names = ['start_date', 'end_date', 'start_time', 'game_url', 'end_time', 'eco', 'eco_url', 'result']
@@ -64,6 +65,7 @@ class FetchGame(FetchBase):
                 lambda x: x.split('\n')[position].split('"')[1])
 
         games_df['eco_name'] = games_df['eco_url'].apply(lambda x: x.split('/')[-1])
+        games_df['rating_difference'] = games_df['white_rating'] - games_df['black_rating']
 
         def extract_moves_and_clock(pgn):
             if pgn.find('{[') == -1:
@@ -80,8 +82,11 @@ class FetchGame(FetchBase):
         # idx = games_df[games_df['result_type'] == 0].index
         # games_df.loc[idx, 'result_type'] = games_df['black_result'][idx]
         # games_df.drop(columns=['white_result', 'black_result'], axis=1, inplace=True)
+        # games_df['Result'] = games_df['Result'].apply(lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
 
         games_df.drop(columns=['pgn'], inplace=True)
+
+        return games_df
 
 
 if __name__ == '__main__':
