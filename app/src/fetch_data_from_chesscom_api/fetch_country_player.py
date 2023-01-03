@@ -43,7 +43,7 @@ class FetchCountryPlayer(FetchBase):
             how='left',
             on='code',
         )
-        self.countries.to_csv(os.path.join(DATA_DIR, FetchCountry.FILE_NAME))
+        self.countries.to_csv(os.path.join(DATA_DIR, FetchCountry.FILE_NAME), index=False)
 
 
 if __name__ == '__main__':
