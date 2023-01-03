@@ -8,14 +8,14 @@ import pandas as pd
 from app.definitions import DATA_DIR
 from app.helpers.api_endpoints import COUNTRY_PLAYERS_ENDPOINT
 from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
-from app.src.fetch_data_from_chesscom_api.fetch_country import FetchCountry
+from app.helpers.data_filenames import PLAYERS_FILENAME, COUNTRIES_FILENAME
 
 
 class FetchCountryPlayer(FetchBase):
-    FILE_NAME = "players.csv"
+    FILE_NAME = PLAYERS_FILENAME
 
     def __init__(self):
-        self.countries = pd.read_csv(os.path.join(DATA_DIR, FetchCountry.FILE_NAME))
+        self.countries = pd.read_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
 
     def fetch_data(self):
         """Fetch player usernames for each country, save API status response to countries and usernames to players."""

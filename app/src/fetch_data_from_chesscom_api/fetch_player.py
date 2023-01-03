@@ -8,15 +8,15 @@ import pandas as pd
 from app.helpers.api_endpoints import PLAYER_PROFILE_ENDPOINT
 from app.definitions import DATA_DIR
 from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
-from app.src.fetch_data_from_chesscom_api.fetch_country_player import FetchCountryPlayer
+from app.helpers.data_filenames import PLAYERS_FILENAME
 
 
 class FetchPlayer(FetchBase):
-    FILE_NAME = 'players_dets.csv'
+    FILE_NAME = PLAYERS_FILENAME
     PLAYER_LIMIT_PER_COUNTRY = 1
 
     def __init__(self):
-        self.players = pd.read_csv(os.path.join(DATA_DIR, FetchCountryPlayer.FILE_NAME))
+        self.players = pd.read_csv(os.path.join(DATA_DIR, PLAYERS_FILENAME))
 
     def fetch_data(self):
         for username in self.players.groupby('country_code').head(self.PLAYER_LIMIT_PER_COUNTRY)['username']:
