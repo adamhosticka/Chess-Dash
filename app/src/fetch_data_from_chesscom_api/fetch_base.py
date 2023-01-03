@@ -14,7 +14,7 @@ from app.helpers.api_endpoints import REQUEST_HEADERS
 class FetchBase:
     FILE_NAME = None
 
-    data = []
+    dataframe = pd.DataFrame()
 
     def run(self):
         """Fetch data and export them to csv."""
@@ -31,7 +31,7 @@ class FetchBase:
 
         :param str url: Request url.
         :return: API response item.
-        :rtype: dict
+        :rtype: dict.
         """
         res = requests.get(url, headers=REQUEST_HEADERS)
         item = json.loads(res.text)
@@ -40,7 +40,13 @@ class FetchBase:
         item['last_modified'] = res.headers.get('last-modified')
         return item
 
+    def save_dataframe(self, data: list):
+        """Save list of data into dataframe.
+
+        :param list data: Data to save.
+        """
+        self.dataframe = pd.DataFrame.from_dict(data)
+
     def _export_to_csv(self):
         """Export data to csv file."""
-        df = pd.DataFrame.from_dict(self.data)
-        df.to_csv(os.path.join(DATA_DIR, self.FILE_NAME), index=False)
+        self.dataframe.to_csv(os.path.join(DATA_DIR, self.FILE_NAME), index=False)

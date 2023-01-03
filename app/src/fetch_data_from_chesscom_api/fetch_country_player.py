@@ -13,26 +13,29 @@ from app.helpers.data_filenames import PLAYERS_FILENAME, COUNTRIES_FILENAME
 
 class FetchCountryPlayer(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
+    # Max value = 1000
+    PLAYER_LIMIT_PER_COUNTRY = 1
 
     def __init__(self):
         self.countries = pd.read_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
 
     def fetch_data(self):
         """Fetch player usernames for each country, save API status response to countries and usernames to players."""
+        players = []
         country_player_response = []
         for code in self.countries['code']:
             item = self.fetch_item(COUNTRY_PLAYERS_ENDPOINT.format(iso=code))
             players_cnt = 0
             if 'players' in item:
-                players_cnt = len(item['players'])
-                for player in item['players']:
-                    self.data.append({
+                players_cnt = max(self.PLAYER_LIMIT_PER_COUNTRY, len(item['players']))
+                for player in item['players'][:self.PLAYER_LIMIT_PER_COUNTRY]:
+                    players.append({
                         'username': player,
                         'country_code': code,
                     })
             country_player_response.append({
                 'code': code,
-                'players_cnt': players_cnt,
+                'saved_players_cnt': players_cnt,
                 'players_status_code': item['status_code'],
                 'players_etag': item['etag'],
                 'players_last_modified': item['last_modified'],
@@ -43,7 +46,8 @@ class FetchCountryPlayer(FetchBase):
             how='left',
             on='code',
         )
-        self.countries.to_csv(os.path.join(DATA_DIR, FetchCountry.FILE_NAME), index=False)
+        self.countries.to_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME), index=False)
+        self.save_dataframe(players)
 
 
 if __name__ == '__main__':

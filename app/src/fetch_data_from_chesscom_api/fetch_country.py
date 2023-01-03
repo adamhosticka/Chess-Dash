@@ -12,8 +12,10 @@ class FetchCountry(FetchBase):
     FILE_NAME = COUNTRIES_FILENAME
 
     def fetch_data(self):
+        countries = []
         for iso_code in ISO_CODES:
-            self.data.append(self.fetch_item(COUNTRY_ENDPOINT.format(iso=iso_code)))
+            countries.append(self.fetch_item(COUNTRY_ENDPOINT.format(iso=iso_code)))
+        self.save_dataframe(countries)
 
 
 if __name__ == '__main__':
