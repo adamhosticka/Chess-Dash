@@ -9,7 +9,7 @@ def fetch_data():
     print("Fetching data")
     FetchCountry().run()
     print("Countries fetched")
-    FetchCountryPlayer(player_limit_per_country=1).run()
+    FetchCountryPlayer(player_limit_per_country=50).run()
     print("Country Players fetched")
     FetchPlayerDetail().run()
     print("Players Details fetched")

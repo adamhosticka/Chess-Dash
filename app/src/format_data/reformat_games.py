@@ -19,7 +19,7 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
 
     games_df.drop(
         columns=["tcn", "start_time", "end_time", "rules", "tournament", "match", "white_@id", "black_@id",
-                 "white_uuid", "black_uuid"],
+                 "white_uuid", "black_uuid", "initial_setup"],
         inplace=True, errors='ignore')
 
     games_df.dropna(axis=0, subset=['pgn'], inplace=True)
@@ -31,6 +31,11 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
     for feature_name, position in zip(feature_names, feature_positions):
         games_df[feature_name] = games_df['pgn'].apply(
             lambda x: x.split('\n')[position].split('"')[1])
+
+    games_df['start_datetime'] = games_df['start_date'] + " " + games_df['start_time']
+    games_df['end_datetime'] = games_df['end_date'] + " " + games_df['end_time']
+    games_df['start_datetime'] = pd.to_datetime(games_df['start_datetime'], format="%Y-%m-%d %H:%M:%S")
+    games_df['end_datetime'] = pd.to_datetime(games_df['end_datetime'], format="%Y-%m-%d %H:%M:%S")
 
     games_df['eco_name'] = games_df['eco_url'].apply(lambda x: x.split('/')[-1])
     games_df['rating_difference'] = games_df['white_rating'] - games_df['black_rating']
@@ -46,7 +51,7 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
     games_df['result'] = games_df['result'].apply(
         lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
 
-    games_df.drop(columns=['pgn'], inplace=True)
+    games_df.drop(columns=['pgn', 'start_date', 'end_date', 'start_time', 'end_time'], axis=1, inplace=True)
 
     return games_df
 
