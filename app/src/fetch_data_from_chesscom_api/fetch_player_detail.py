@@ -20,7 +20,6 @@ class FetchPlayerDetail(FetchBase):
     def fetch_data(self):
         player_details = []
         for username in self.players['username']:
-            print(username)
             player_details.append(self.fetch_item(PLAYER_PROFILE_ENDPOINT.format(username=username)))
         player_details_df = pd.DataFrame.from_dict(player_details)
         player_details_df.drop(

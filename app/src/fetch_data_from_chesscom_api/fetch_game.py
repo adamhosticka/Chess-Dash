@@ -14,25 +14,22 @@ from app.src.format_data.reformat_games import reformat_games
 
 class FetchGame(FetchBase):
     FILE_NAME = GAMES_FILENAME
-    LAST_X_ARCHIVES = 1
 
-    def __init__(self):
+    def __init__(self, archives_cnt: int = 1):
         self.players = pd.read_csv(os.path.join(DATA_DIR, PLAYERS_FILENAME))
+        self.archives_to_fetch_cnt = archives_cnt
 
     def fetch_data(self):
         games = []
-        cnt = 0
         for username in self.players['username']:
-            cnt += 1
-            print(cnt)
             archives_item = self.fetch_item(PLAYER_MONTHLY_ARCHIVES.format(username=username))
-            for archive in archives_item['archives'][-self.LAST_X_ARCHIVES:]:
+            archive_cnt = min(len(archives_item['archives']), self.archives_to_fetch_cnt)
+            for archive in archives_item['archives'][-archive_cnt:]:
                 games_item = self.fetch_item(archive)
                 games.extend(games_item['games'])
         games_df = pd.json_normalize(games, sep='_')
         games_df = reformat_games(games_df)
         self.dataframe = games_df
-        print("GamesCount", len(self.dataframe))
 
 
 if __name__ == '__main__':

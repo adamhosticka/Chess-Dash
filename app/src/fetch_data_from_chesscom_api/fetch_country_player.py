@@ -13,11 +13,10 @@ from app.helpers.data_filenames import PLAYERS_FILENAME, COUNTRIES_FILENAME
 
 class FetchCountryPlayer(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
-    # Max value = 1000
-    PLAYER_LIMIT_PER_COUNTRY = 1
 
-    def __init__(self):
+    def __init__(self, player_limit_per_country: int = 1):
         self.countries = pd.read_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
+        self.player_limit_per_country = player_limit_per_country  # max value 1000
 
     def fetch_data(self):
         """Fetch player usernames for each country, save API status response to countries and usernames to players."""
@@ -27,8 +26,8 @@ class FetchCountryPlayer(FetchBase):
             item = self.fetch_item(COUNTRY_PLAYERS_ENDPOINT.format(iso=code))
             players_cnt = 0
             if 'players' in item:
-                players_cnt = max(self.PLAYER_LIMIT_PER_COUNTRY, len(item['players']))
-                for player in item['players'][:self.PLAYER_LIMIT_PER_COUNTRY]:
+                players_cnt = max(self.player_limit_per_country, len(item['players']))
+                for player in item['players'][:self.player_limit_per_country]:
                     players.append({
                         'username': player,
                         'country_code': code,

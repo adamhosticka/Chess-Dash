@@ -20,7 +20,6 @@ class FetchPlayerStats(FetchBase):
     def fetch_data(self):
         player_stats = []
         for username in self.players['username']:
-            print(username)
             player_stats_item = self.fetch_item(PLAYER_STATS_ENDPOINT.format(username=username))
             player_stats_item['username'] = username
             player_stats.append(player_stats_item)
