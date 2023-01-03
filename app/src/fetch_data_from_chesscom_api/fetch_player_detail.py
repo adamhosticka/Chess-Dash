@@ -30,9 +30,10 @@ class FetchPlayerDetail(FetchBase):
             errors='ignore'
         )
         player_details_df.rename(columns={"country": "country_@id"}, inplace=True)
+        player_details_df = self.remove_same_columns_from_right(self.players, player_details_df, 'username')
         self.dataframe = pd.merge(
-            player_details_df,
             self.players,
+            player_details_df,
             how='left',
             on='username'
         )

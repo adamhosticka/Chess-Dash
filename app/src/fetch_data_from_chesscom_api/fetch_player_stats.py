@@ -30,9 +30,10 @@ class FetchPlayerStats(FetchBase):
                      'chess_daily_record_time_per_move', 'chess_daily_record_timeout_percent'],
             axis=1, inplace=True, errors='ignore')
 
+        player_stats_df = self.remove_same_columns_from_right(self.players, player_stats_df, 'username')
         self.dataframe = pd.merge(
-            player_stats_df,
             self.players,
+            player_stats_df,
             how='left',
             on='username'
         )

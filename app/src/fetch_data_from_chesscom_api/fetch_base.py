@@ -47,6 +47,12 @@ class FetchBase:
         """
         self.dataframe = pd.DataFrame.from_dict(data)
 
+    @staticmethod
+    def remove_same_columns_from_right(left: pd.DataFrame, right: pd.DataFrame, keep_column: str) -> pd.DataFrame:
+        left_columns_for_diff = set(left.columns)
+        left_columns_for_diff.remove(keep_column)
+        return right[list(set(right.columns).difference(left_columns_for_diff))]
+
     def _export_to_csv(self):
         """Export data to csv file."""
         self.dataframe.to_csv(os.path.join(DATA_DIR, self.FILE_NAME), index=False)

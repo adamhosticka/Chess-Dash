@@ -40,9 +40,11 @@ class FetchCountryPlayer(FetchBase):
                 'players_etag': item['etag'],
                 'players_last_modified': item['last_modified'],
             })
+        country_player_df = pd.DataFrame.from_dict(country_player_response)
+        country_player_df = self.remove_same_columns_from_right(self.countries, country_player_df, 'code')
         self.countries = pd.merge(
             self.countries,
-            pd.DataFrame.from_dict(country_player_response),
+            country_player_df,
             how='left',
             on='code',
         )
