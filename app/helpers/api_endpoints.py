@@ -10,6 +10,7 @@ REQUEST_HEADERS = {
     'Accept-Language': 'en-US,en;q=0.5',
     # Accept-Encoding: gzip, deflate, br
     'Connection': 'keep-alive',
+    'From': 'adamhosticka@gmail.com',
     # If-Modified-Since: Tuesday, 03-Jan-2023 03:42:47 GMT+0000
     # If-None-Match: W/"f274225420b3683ec349d230dee00c72"
 }
