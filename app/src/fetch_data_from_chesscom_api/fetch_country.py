@@ -1,5 +1,5 @@
 """
-Fetch country information from Chess.com API and save it to csv file.
+Fetch country information from Chess.com API and save it to a file.
 """
 
 from app.helpers.data_filenames import COUNTRIES_FILENAME
@@ -15,7 +15,7 @@ class FetchCountry(FetchBase):
         countries = []
         for iso_code in ISO_CODES:
             countries.append(self.fetch_item(COUNTRY_ENDPOINT.format(iso=iso_code)))
-        self.save_dataframe(countries)
+        self.create_dataframe_from_list(countries)
 
 
 if __name__ == '__main__':

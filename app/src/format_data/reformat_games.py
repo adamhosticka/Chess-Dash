@@ -37,12 +37,14 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
 
     games_df['white_moves'], games_df['black_moves'], games_df['white_clock'], games_df['black_clock'] = \
         zip(*games_df['pgn'].apply(extract_moves_and_clock))
+    games_df['moves_count'] = (games_df['white_moves'].apply(len) + games_df['black_moves'].apply(len)) / 2
 
-    # games_df['result_type'] = games_df['white_result'].apply(lambda x: x if x != 'win' else 0)
-    # idx = games_df[games_df['result_type'] == 0].index
-    # games_df.loc[idx, 'result_type'] = games_df['black_result'][idx]
-    # games_df.drop(columns=['white_result', 'black_result'], axis=1, inplace=True)
-    # games_df['Result'] = games_df['Result'].apply(lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
+    games_df['result_type'] = games_df['white_result'].apply(lambda x: x if x != 'win' else 0)
+    idx = games_df[games_df['result_type'] == 0].index
+    games_df.loc[idx, 'result_type'] = games_df['black_result'][idx]
+    games_df.drop(columns=['white_result', 'black_result'], axis=1, inplace=True)
+    games_df['result'] = games_df['result'].apply(
+        lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
 
     games_df.drop(columns=['pgn'], inplace=True)
 

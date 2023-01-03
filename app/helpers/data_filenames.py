@@ -1,5 +1,5 @@
 """Filenames for stored data"""
 
-COUNTRIES_FILENAME = 'countries.csv'
-PLAYERS_FILENAME = 'players.csv'
-GAMES_FILENAME = 'games.csv'
+COUNTRIES_FILENAME = 'countries.pkl'
+PLAYERS_FILENAME = 'players.pkl'
+GAMES_FILENAME = 'games.pkl'

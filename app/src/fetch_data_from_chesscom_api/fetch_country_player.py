@@ -1,5 +1,5 @@
 """
-Fetch user information from Chess.com API and save it to csv file.
+Fetch user information from Chess.com API and save it to a file.
 """
 
 import os
@@ -15,7 +15,7 @@ class FetchCountryPlayer(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
 
     def __init__(self, player_limit_per_country: int = 1):
-        self.countries = pd.read_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
+        self.countries = self.load_dataframe(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
         self.player_limit_per_country = player_limit_per_country  # max value 1000
 
     def fetch_data(self):
@@ -47,8 +47,8 @@ class FetchCountryPlayer(FetchBase):
             how='left',
             on='code',
         )
-        self.countries.to_csv(os.path.join(DATA_DIR, COUNTRIES_FILENAME), index=False)
-        self.save_dataframe(players)
+        self.save_dataframe(self.countries, COUNTRIES_FILENAME)
+        self.create_dataframe_from_list(players)
 
 
 if __name__ == '__main__':

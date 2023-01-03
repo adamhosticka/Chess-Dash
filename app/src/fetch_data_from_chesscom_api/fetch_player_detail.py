@@ -1,12 +1,10 @@
 """
-Fetch players from all players from all countries from Chess.com API and save it to csv
+Fetch players from all players from all countries from Chess.com API and save it to a file.
 """
 
-import os
 import pandas as pd
 
 from app.helpers.api_endpoints import PLAYER_PROFILE_ENDPOINT
-from app.definitions import DATA_DIR
 from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
 from app.helpers.data_filenames import PLAYERS_FILENAME
 
@@ -15,7 +13,7 @@ class FetchPlayerDetail(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
 
     def __init__(self):
-        self.players = pd.read_csv(os.path.join(DATA_DIR, PLAYERS_FILENAME))
+        self.players = self.load_dataframe(PLAYERS_FILENAME)
 
     def fetch_data(self):
         player_details = []
