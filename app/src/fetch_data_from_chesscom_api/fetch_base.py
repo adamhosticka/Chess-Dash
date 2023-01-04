@@ -2,13 +2,12 @@
 Base class for fetching data from Chess.com API and saving them to a file.
 """
 
-import os
 import requests
 import json
 import pandas as pd
 
-from app.definitions import DATA_DIR
 from app.helpers.api_endpoints import REQUEST_HEADERS
+from app.utils.load_save_dataframe import load_dataframe, save_dataframe
 
 
 class FetchBase:
@@ -55,23 +54,23 @@ class FetchBase:
 
     @staticmethod
     def load_dataframe(filename: str) -> pd.DataFrame:
-        """Load dataframe from file.
+        """Call load_dataframe function from utils.
 
         :arg: str filename: Name of file to load.
         :return: Dataframe.
         :rtype: pd.DataFrame.
         """
-        return pd.read_pickle(os.path.join(DATA_DIR, filename))
+        return load_dataframe(filename)
 
     @staticmethod
     def save_dataframe(dataframe: pd.DataFrame, filename: str):
-        """Save dataframe to file.
+        """Call save_dataframe function from utils.
 
         :arg: pd.Dataframe dataframe: Dataframe to save.
         :arg: str filename: Filename to save dataframe to.
         """
-        dataframe.to_pickle(os.path.join(DATA_DIR, filename))
+        save_dataframe(dataframe, filename)
 
     def _save_data(self):
-        """Export data to file."""
+        """Save data to file."""
         self.save_dataframe(self.dataframe, self.FILE_NAME)
