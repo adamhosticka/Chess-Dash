@@ -1,8 +1,7 @@
 from app.src.fetch_data_from_chesscom_api.fetch_country import FetchCountry
 from app.src.fetch_data_from_chesscom_api.fetch_country_player import FetchCountryPlayer
 from app.src.fetch_data_from_chesscom_api.fetch_game import FetchGame
-from app.src.fetch_data_from_chesscom_api.fetch_player_detail import FetchPlayerDetail
-from app.src.fetch_data_from_chesscom_api.fetch_player_stats import FetchPlayerStats
+from app.src.fetch_data_from_chesscom_api.fetch_player import FetchPlayer
 
 
 def fetch_data():
@@ -11,10 +10,8 @@ def fetch_data():
     print("Countries fetched")
     FetchCountryPlayer(player_limit_per_country=50).run()
     print("Country Players fetched")
-    FetchPlayerDetail().run()
-    print("Players Details fetched")
-    FetchPlayerStats().run()
-    print("Players Stats fetched")
+    FetchPlayer().run()
+    print("Players fetched")
     FetchGame(archives_cnt=1).run()
     print("Games fetched :)")
 

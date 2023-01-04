@@ -7,19 +7,22 @@ from app.definitions import DATA_DIR
 
 
 def load_dataframe(filename: str) -> pd.DataFrame:
-    """Load dataframe from file.
+    """Load dataframe from file if exists.
 
-    :arg: str filename: Name of file to load.
+    :param: str filename: Name of file to load.
     :return: Dataframe.
     :rtype: pd.DataFrame.
     """
-    return pd.read_pickle(os.path.join(DATA_DIR, filename))
+    if os.path.isfile(os.path.join(DATA_DIR, filename)):
+        return pd.read_pickle(os.path.join(DATA_DIR, filename))
+    print(f"Couldnt' find dataframe with filename {filename} -> returning empty dataframe")
+    return pd.DataFrame()
 
 
 def save_dataframe(dataframe: pd.DataFrame, filename: str):
     """Save dataframe to file.
 
-    :arg: pd.Dataframe dataframe: Dataframe to save.
-    :arg: str filename: Filename to save dataframe to.
+    :param: pd.Dataframe dataframe: Dataframe to save.
+    :param: str filename: Filename to save dataframe to.
     """
     dataframe.to_pickle(os.path.join(DATA_DIR, filename))

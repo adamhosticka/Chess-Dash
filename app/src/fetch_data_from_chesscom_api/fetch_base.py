@@ -5,6 +5,7 @@ Base class for fetching data from Chess.com API and saving them to a file.
 import requests
 import json
 import pandas as pd
+from time import sleep
 
 from app.helpers.api_endpoints import REQUEST_HEADERS
 from app.utils.load_save_dataframe import load_dataframe, save_dataframe
@@ -33,30 +34,34 @@ class FetchBase:
         :rtype: dict.
         """
         res = requests.get(url, headers=REQUEST_HEADERS)
-        item = json.loads(res.text)
-        item['status_code'] = res.status_code
-        item['etag'] = res.headers.get('etag')
-        item['last_modified'] = res.headers.get('last-modified')
-        return item
+        if res.status_code != 200:
+            print(f"WARNING: Status code {res.status_code} for url: {url}.")
+            sleep(1)
+            if res.status_code == 429:  # Rate limit
+                print("Sleeping for one minute.")
+                sleep(60)
+                res = requests.get(url, headers=REQUEST_HEADERS)
+                if res.status_code == 429:  # Rate limit
+                    print("Rate limit exceeded -> exiting.")
+                    exit(0)
+            return None
+        return json.loads(res.text)
 
-    def create_dataframe_from_list(self, data: list):
+    @staticmethod
+    def create_dataframe_from_list(data: list) -> pd.DataFrame:
         """Save list of data into dataframe.
 
         :param list data: Data to save.
+        :return: Dataframe.
+        :rtype: pd.DataFrame.
         """
-        self.dataframe = pd.DataFrame.from_dict(data)
-
-    @staticmethod
-    def remove_same_columns_from_right(left: pd.DataFrame, right: pd.DataFrame, keep_column: str) -> pd.DataFrame:
-        left_columns_for_diff = set(left.columns)
-        left_columns_for_diff.remove(keep_column)
-        return right[list(set(right.columns).difference(left_columns_for_diff))]
+        return pd.DataFrame.from_dict(data)
 
     @staticmethod
     def load_dataframe(filename: str) -> pd.DataFrame:
         """Call load_dataframe function from utils.
 
-        :arg: str filename: Name of file to load.
+        :param: str filename: Name of file to load.
         :return: Dataframe.
         :rtype: pd.DataFrame.
         """
@@ -66,8 +71,8 @@ class FetchBase:
     def save_dataframe(dataframe: pd.DataFrame, filename: str):
         """Call save_dataframe function from utils.
 
-        :arg: pd.Dataframe dataframe: Dataframe to save.
-        :arg: str filename: Filename to save dataframe to.
+        :param: pd.Dataframe dataframe: Dataframe to save.
+        :param: str filename: Filename to save dataframe to.
         """
         save_dataframe(dataframe, filename)
 

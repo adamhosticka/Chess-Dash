@@ -14,41 +14,24 @@ from app.helpers.data_filenames import PLAYERS_FILENAME, COUNTRIES_FILENAME
 class FetchCountryPlayer(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
 
-    def __init__(self, player_limit_per_country: int = 1):
+    def __init__(self, player_limit_per_country: int = 1000):
         self.countries = self.load_dataframe(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
-        self.player_limit_per_country = player_limit_per_country  # max value 1000
+        self.players = self.load_dataframe(os.path.join(DATA_DIR, PLAYERS_FILENAME))
 
     def fetch_data(self):
         """Fetch player usernames for each country, save API status response to countries and usernames to players."""
         players = []
-        country_player_response = []
         for code in self.countries['code']:
             item = self.fetch_item(COUNTRY_PLAYERS_ENDPOINT.format(iso=code))
-            players_cnt = 0
             if 'players' in item:
-                players_cnt = max(self.player_limit_per_country, len(item['players']))
-                for player in item['players'][:self.player_limit_per_country]:
+                for player in item['players']:
                     players.append({
                         'username': player,
                         'country_code': code,
                     })
-            country_player_response.append({
-                'code': code,
-                'saved_players_cnt': players_cnt,
-                'players_status_code': item['status_code'],
-                'players_etag': item['etag'],
-                'players_last_modified': item['last_modified'],
-            })
-        country_player_df = pd.DataFrame.from_dict(country_player_response)
-        country_player_df = self.remove_same_columns_from_right(self.countries, country_player_df, 'code')
-        self.countries = pd.merge(
-            self.countries,
-            country_player_df,
-            how='left',
-            on='code',
-        )
-        self.save_dataframe(self.countries, COUNTRIES_FILENAME)
-        self.create_dataframe_from_list(players)
+        self.dataframe = self.create_dataframe_from_list(players)
+        if not self.players.empty and not self.dataframe.empty:
+            self.dataframe = pd.merge(self.players, self.dataframe, how='left')
 
 
 if __name__ == '__main__':
