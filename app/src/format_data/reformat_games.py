@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+
+from app.helpers.data_filenames import GAMES_FILENAME, REFORMATED_GAMES_FILENAME
+from app.utils.load_save_dataframe import load_dataframe, save_dataframe
+
 pd.options.mode.chained_assignment = None  # Disable SettingWithCopyWarning
 
 
@@ -23,8 +27,8 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
         inplace=True, errors='ignore')
 
     games_df.dropna(axis=0, subset=['pgn'], inplace=True)
-    feature_names = ['start_date', 'end_date', 'start_time', 'game_url', 'end_time', 'eco', 'eco_url', 'result']
-    feature_positions = [2, -6, -7, -4, -5, -15, -14, 6]
+    feature_names = ['start_date', 'end_date', 'start_time', 'end_time', 'eco', 'eco_url', 'result']
+    feature_positions = [2, -6, -7, -5, -15, -14, 6]
 
     # Takes in the name you want to give the feature, and the position of the feature in
     # the pgn.split('\n') and creates the feature with feature name in the dataframe
@@ -69,3 +73,9 @@ def extract_moves_and_clock(pgn: str) -> tuple:
         return pgn.split("\n")[-2].split()[1::8], pgn.split("\n")[-2].split()[5::8], \
             [x[:-2] for x in pgn.split("\n")[-2].split()[3::8]], \
             [x[:-2] for x in pgn.split("\n")[-2].split()[7::8]]
+
+
+if __name__ == '__main__':
+    games = load_dataframe(GAMES_FILENAME)
+    reformated_games = reformat_games(games)
+    save_dataframe(reformated_games, REFORMATED_GAMES_FILENAME)

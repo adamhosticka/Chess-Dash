@@ -1,5 +1,5 @@
 """
-Fetch country information from Chess.com API and save it to a file.
+Fetch countries information from Chess.com API and save it to a file.
 """
 
 from app.helpers.data_filenames import COUNTRIES_FILENAME

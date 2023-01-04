@@ -1,5 +1,5 @@
 """
-Fetch players details and stats from Chess.com API and save it to a file.
+Fetch players details and stats from Chess.com API, merge ot with already saved player and save it to a file.
 """
 
 import pandas as pd
@@ -59,10 +59,10 @@ class FetchPlayer(FetchBase):
 
 
 if __name__ == '__main__':
-    for i in range(5):
+    for i in range(10):
         print(f"{i}. jizda")
         try:
-            FetchPlayer(10).run()
+            FetchPlayer(100).run()
         except Exception as e:
             import time
             print(f"Skoncila s chybou {str(e)}.")
