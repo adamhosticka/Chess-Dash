@@ -1,11 +1,9 @@
 """
-Fetch games played by saved players from Chess.com API and save it to csv
+Fetch games played by saved players from Chess.com API and save it to a file.
 """
 
-import os
 import pandas as pd
 
-from app.definitions import DATA_DIR
 from app.helpers.api_endpoints import PLAYER_MONTHLY_ARCHIVES
 from app.helpers.data_filenames import GAMES_FILENAME, PLAYERS_FILENAME
 from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
@@ -16,7 +14,7 @@ class FetchGame(FetchBase):
     FILE_NAME = GAMES_FILENAME
 
     def __init__(self, archives_cnt: int = 1):
-        self.players = pd.read_csv(os.path.join(DATA_DIR, PLAYERS_FILENAME))
+        self.players = self.load_dataframe(PLAYERS_FILENAME)
         self.archives_to_fetch_cnt = archives_cnt
 
     def fetch_data(self):

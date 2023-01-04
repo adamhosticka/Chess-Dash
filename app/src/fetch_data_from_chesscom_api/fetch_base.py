@@ -1,5 +1,5 @@
 """
-Base class for fetching data from Chess.com API and saving them to csv file.
+Base class for fetching data from Chess.com API and saving them to a file.
 """
 
 import os
@@ -19,7 +19,7 @@ class FetchBase:
     def run(self):
         """Fetch data and export them to csv."""
         self.fetch_data()
-        self._export_to_csv()
+        self._save_data()
 
     def fetch_data(self):
         """Call fetch_item, modify the return value and save it to data."""
@@ -40,7 +40,7 @@ class FetchBase:
         item['last_modified'] = res.headers.get('last-modified')
         return item
 
-    def save_dataframe(self, data: list):
+    def create_dataframe_from_list(self, data: list):
         """Save list of data into dataframe.
 
         :param list data: Data to save.
@@ -53,6 +53,25 @@ class FetchBase:
         left_columns_for_diff.remove(keep_column)
         return right[list(set(right.columns).difference(left_columns_for_diff))]
 
-    def _export_to_csv(self):
-        """Export data to csv file."""
-        self.dataframe.to_csv(os.path.join(DATA_DIR, self.FILE_NAME), index=False)
+    @staticmethod
+    def load_dataframe(filename: str) -> pd.DataFrame:
+        """Load dataframe from file.
+
+        :arg: str filename: Name of file to load.
+        :return: Dataframe.
+        :rtype: pd.DataFrame.
+        """
+        return pd.read_pickle(os.path.join(DATA_DIR, filename))
+
+    @staticmethod
+    def save_dataframe(dataframe: pd.DataFrame, filename: str):
+        """Save dataframe to file.
+
+        :arg: pd.Dataframe dataframe: Dataframe to save.
+        :arg: str filename: Filename to save dataframe to.
+        """
+        dataframe.to_pickle(os.path.join(DATA_DIR, filename))
+
+    def _save_data(self):
+        """Export data to file."""
+        self.save_dataframe(self.dataframe, self.FILE_NAME)

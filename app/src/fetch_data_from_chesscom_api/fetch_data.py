@@ -6,11 +6,17 @@ from app.src.fetch_data_from_chesscom_api.fetch_player_stats import FetchPlayerS
 
 
 def fetch_data():
+    print("Fetching data")
     FetchCountry().run()
-    FetchCountryPlayer(player_limit_per_country=1).run()
+    print("Countries fetched")
+    FetchCountryPlayer(player_limit_per_country=50).run()
+    print("Country Players fetched")
     FetchPlayerDetail().run()
+    print("Players Details fetched")
     FetchPlayerStats().run()
+    print("Players Stats fetched")
     FetchGame(archives_cnt=1).run()
+    print("Games fetched :)")
 
 
 if __name__ == '__main__':
