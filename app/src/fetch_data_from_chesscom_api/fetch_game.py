@@ -26,7 +26,7 @@ class FetchGame(FetchBase):
 
         if games_date_df_col not in self.players:
             self.players[games_date_df_col] = False
-        self.players[self.players[games_date_df_col].isna()] = False
+        self.players[self.players[games_date_df_col].isna()][games_date_df_col] = False
         self.players[games_date_df_col] = self.players[games_date_df_col].astype(bool)
 
         cnt = 0
@@ -51,12 +51,13 @@ class FetchGame(FetchBase):
 
 
 if __name__ == '__main__':
-    for i in range(10):
-        print(f"{i}. jizda")
-        try:
-            FetchGame(100).run()
-        except Exception as e:
-            import time
-            print(f"Skoncila s chybou {str(e)}.")
-            print(repr(e))
-            time.sleep(61)
+    FetchGame(100).run()
+    # for i in range(10):
+    #     print(f"{i}. jizda")
+    #     try:
+    #         FetchGame(100).run()
+    #     except Exception as e:
+    #         import time
+    #         print(f"Skoncila s chybou {str(e)}.")
+    #         print(repr(e))
+    #         time.sleep(61)
