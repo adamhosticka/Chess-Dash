@@ -3,7 +3,7 @@
 import os
 import pandas as pd
 
-from app.definitions import DATA_DIR
+from app.helpers.paths import DATA_DIR
 
 
 def load_dataframe(filename: str) -> pd.DataFrame:
