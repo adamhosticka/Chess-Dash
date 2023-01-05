@@ -1,5 +1,9 @@
 import numpy as np
 import pandas as pd
+
+from app.helpers.data_filenames import GAMES_FILENAME, REFORMATED_GAMES_FILENAME
+from app.utils.load_save_dataframe import load_dataframe, save_dataframe
+
 pd.options.mode.chained_assignment = None  # Disable SettingWithCopyWarning
 
 
@@ -23,8 +27,8 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
         inplace=True, errors='ignore')
 
     games_df.dropna(axis=0, subset=['pgn'], inplace=True)
-    feature_names = ['start_date', 'end_date', 'start_time', 'game_url', 'end_time', 'eco', 'eco_url', 'result']
-    feature_positions = [2, -6, -7, -4, -5, -15, -14, 6]
+    feature_names = ['start_date', 'end_date', 'start_time', 'end_time', 'eco', 'eco_url', 'result']
+    feature_positions = [2, -6, -7, -5, -15, -14, 6]
 
     # Takes in the name you want to give the feature, and the position of the feature in
     # the pgn.split('\n') and creates the feature with feature name in the dataframe
@@ -36,6 +40,8 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
     games_df['end_datetime'] = games_df['end_date'] + " " + games_df['end_time']
     games_df['start_datetime'] = pd.to_datetime(games_df['start_datetime'], format="%Y-%m-%d %H:%M:%S")
     games_df['end_datetime'] = pd.to_datetime(games_df['end_datetime'], format="%Y-%m-%d %H:%M:%S")
+
+    games_df['time'], games_df['increment'] = zip(*games_df['time_control'].apply(extract_time_and_increment))
 
     games_df['eco_name'] = games_df['eco_url'].apply(lambda x: x.split('/')[-1])
     games_df['rating_difference'] = games_df['white_rating'] - games_df['black_rating']
@@ -51,7 +57,11 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
     games_df['result'] = games_df['result'].apply(
         lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
 
-    games_df.drop(columns=['pgn', 'start_date', 'end_date', 'start_time', 'end_time'], axis=1, inplace=True)
+    games_df.drop(
+        columns=['pgn', 'start_date', 'end_date', 'start_time', 'end_time', 'time_control'],
+        axis=1,
+        inplace=True
+    )
 
     return games_df
 
@@ -69,3 +79,20 @@ def extract_moves_and_clock(pgn: str) -> tuple:
         return pgn.split("\n")[-2].split()[1::8], pgn.split("\n")[-2].split()[5::8], \
             [x[:-2] for x in pgn.split("\n")[-2].split()[3::8]], \
             [x[:-2] for x in pgn.split("\n")[-2].split()[7::8]]
+
+
+def extract_time_and_increment(time_control: str):
+    if time_control[:2] == '1/':
+        return 1, 0
+    else:
+        splitted = time_control.split('+')
+        if len(splitted) == 1:
+            return splitted[0], 0
+        else:
+            return time_control.split('+')[0], time_control.split('+')[1]
+
+
+if __name__ == '__main__':
+    games = load_dataframe(GAMES_FILENAME)
+    reformated_games = reformat_games(games)
+    save_dataframe(reformated_games, REFORMATED_GAMES_FILENAME)
