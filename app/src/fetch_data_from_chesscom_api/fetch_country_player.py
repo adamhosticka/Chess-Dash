@@ -29,9 +29,12 @@ class FetchCountryPlayer(FetchBase):
                         'username': player,
                         'country_code': code,
                     })
+        if not players:
+            exit(1)
         self.dataframe = self.create_dataframe_from_list(players)
         if not self.players.empty and not self.dataframe.empty:
             self.dataframe = pd.merge(self.players, self.dataframe, how='outer')
+        self.dataframe = self.dataframe[~self.dataframe.duplicated(subset='username')]
 
 
 if __name__ == '__main__':

@@ -29,10 +29,11 @@ class FetchGame(FetchBase):
         self.players[self.players[games_date_df_col].isna()][games_date_df_col] = False
         self.players[games_date_df_col] = self.players[games_date_df_col].astype(bool)
 
-        cnt = 0
+        # cnt = 0
         for username in self.players[~self.players[games_date_df_col]].head(self.fetch_from_players_cnt)['username']:
-            cnt += 1
-            print(f"{cnt}. {username}")
+            # cnt += 1
+            # print(f"{cnt}. {username}")
+
             games_item = self.fetch_item(
                 PLAYER_GAMES_MONTH.format(username=username, year=self.year, month=self.month)
             )

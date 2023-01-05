@@ -6,6 +6,7 @@ PLAYERS_KEEP_COLUMNS_RENAME = {
     'username': 'username',
     'followers': 'followers',
     'country': 'country_@id',
+    'country_code': 'country_code',
     'last_online': 'last_online',
     'joined': 'joined',
     'status': 'status',
