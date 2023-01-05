@@ -24,9 +24,9 @@ class FetchPlayer(FetchBase):
         original_players_plain = True
         if 'player_id' in self.players:
             original_players_plain = False
-            fetch_players_df = self.players[self.players['player_id'].isna()].head(self.players_cnt)
+            fetch_players_df = self.players[self.players['player_id'].isna()].sample(n=self.players_cnt)
         else:
-            fetch_players_df = self.players.head(self.players_cnt)
+            fetch_players_df = self.players.sample(n=self.players_cnt)
 
         # cnt = 0
         for username, country_code in fetch_players_df[['username', 'country_code']].itertuples(index=False):
