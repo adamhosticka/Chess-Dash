@@ -26,7 +26,7 @@ class FetchGame(FetchBase):
 
         if games_date_df_col not in self.players:
             self.players[games_date_df_col] = False
-        self.players[self.players[games_date_df_col].isna()][games_date_df_col] = False
+        self.players.loc[self.players[games_date_df_col].isna(), games_date_df_col] = False
         self.players[games_date_df_col] = self.players[games_date_df_col].astype(bool)
 
         # cnt = 0
