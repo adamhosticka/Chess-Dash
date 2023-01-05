@@ -3,8 +3,7 @@
 import numpy as np
 import pandas as pd
 from datetime import datetime
-from dash import Dash, html, dcc, Input, Output
-import plotly.express as px
+from dash import Dash, html
 from pycountry_convert import country_alpha2_to_country_name, country_name_to_country_alpha3
 
 from app.gui.player import (

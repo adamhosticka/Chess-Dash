@@ -9,7 +9,7 @@ from gui.player.player_layout import player_layout
 from gui.game.game_layout import game_layout
 
 
-def main() -> None:
+def main():
 
     players_df = load_dataframe(PLAYERS_FILENAME)
     games_df = load_dataframe(GAMES_FILENAME)
