@@ -5,7 +5,7 @@ import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
 from app.gui.player.dash_components import time_class_selector
-from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR
+from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR, PLAYER_COLOR
 
 
 class StatusRatingCorrelation(GraphLayout):
@@ -31,6 +31,6 @@ class StatusRatingCorrelation(GraphLayout):
                 y=time_class,
                 labels={time_class: f'{time_class.replace("_", " ")} mean'},
             )
-            fig.update_traces(marker_color='#2bb585', width=0.40)
+            fig.update_traces(marker_color=PLAYER_COLOR, width=0.40)
 
             return fig

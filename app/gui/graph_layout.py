@@ -7,7 +7,7 @@ import pandas as pd
 class GraphLayout:
     COMPONENT_ID = ""
     GRAPH_ID = ""
-    GRAPH_WIDTH_PERCENT = 50
+    GRAPH_WIDTH_PERCENT = 65
     CALLBACK = False
 
     def __init__(self, app: Dash, df: pd.DataFrame):

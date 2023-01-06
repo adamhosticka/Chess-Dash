@@ -3,6 +3,7 @@
 import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
+from app.helpers.gui_config import GAME_COLOR
 from app.utils.format_graph_labels import format_labels
 
 
@@ -22,6 +23,6 @@ class RatedRatingCorrelation(GraphLayout):
             labels=format_labels(['rating_mean']),
             title="Rated vs. non-rated games mean rating",
         )
-        fig.update_traces(marker_color='#1a6c75', width=0.40)
+        fig.update_traces(marker_color=GAME_COLOR, width=0.40)
 
         return fig
