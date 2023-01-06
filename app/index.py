@@ -1,6 +1,5 @@
 """Main application."""
 
-import time
 from flask_caching import Cache
 from dash import Dash, html
 from dash_bootstrap_components.themes import GRID
@@ -24,10 +23,10 @@ def main():
     @cache.memoize(timeout=3600)
     def get_dataframes(file1: str, file2: str) -> tuple:
         print("loading dataframes")
+        cache.clear()
         return load_dataframe(file1), load_dataframe(file2)
 
-    # players_df, games_df = get_dataframes(PLAYERS_FILENAME, REFORMATED_GAMES_FILENAME)
-    players_df, games_df = get_dataframes(PLAYERS_FILENAME, 'reformated_games_truncated.pkl')
+    players_df, games_df = get_dataframes(PLAYERS_FILENAME, REFORMATED_GAMES_FILENAME)
 
     app.layout = html.Div(
         id='root',
