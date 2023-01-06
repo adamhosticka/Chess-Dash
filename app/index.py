@@ -14,17 +14,17 @@ def main():
     players_df = load_dataframe(PLAYERS_FILENAME)
     games_df = load_dataframe(GAMES_FILENAME)
 
-    app = Dash(external_stylesheets=[BOOTSTRAP])
+    app = Dash(meta_tags=[{"name": "viewport", "content": "width=device-width"}], external_stylesheets=[BOOTSTRAP])
     app.title = "Chess data visualization"
     app.layout = html.Div(
         id='root',
-        style={"background-color": "#F8F8F8"},
+        style={"textAlign": "center", "paddingTop": "1vh"},
         children=[
             html.Div(
-                style={"text-align": "center", "margin": "0 10vh", "padding-top": "1vh", "background-color": "white"},
+                style={"margin": "0 1rem"},
                 children=[
                     html.Div(
-                        style={"margin": "0 10vh"},
+                        style={"width": "75%", "margin": "auto"},
                         children=[
                             player_layout(app, players_df),
                             game_layout(app, games_df),

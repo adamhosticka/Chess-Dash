@@ -10,15 +10,18 @@ from app.gui.player import (
     players_count_per_country,
     players_rating_per_country,
     rating_correlation,
+    status_rating_correlation,
 )
 
 
+def convert_codes(code):
+    try:
+        return country_name_to_country_alpha3(country_alpha2_to_country_name(code))
+    except:
+        return np.nan
+
+
 def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
-    def convert_codes(code):
-        try:
-            return country_name_to_country_alpha3(country_alpha2_to_country_name(code))
-        except:
-            return np.nan
 
     df['country'] = df['country_code'].apply(convert_codes)
     df = df[df['player_id'].notna()]
@@ -34,6 +37,7 @@ def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
             html.Div(
                 id='player_layout',
                 children=[
+                    status_rating_correlation.render(app, df),
                     players_count_per_country.render(app, df),
                     players_rating_per_country.render(app, df),
                     rating_correlation.render(app, df, 'followers'),
