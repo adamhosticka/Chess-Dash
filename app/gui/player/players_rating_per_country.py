@@ -1,12 +1,12 @@
 """"""
 
-import pandas as pd
-from dash import Dash, html, dcc, Input, Output
+from dash import html, Input, Output
 import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
 from app.gui.player.dash_components import time_class_selector
 from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR, SEQUENTIAL_COLOR
+from app.utils.format_graph_labels import format_labels
 
 
 class PlayersRatingPerCountry(GraphLayout):
@@ -30,7 +30,7 @@ class PlayersRatingPerCountry(GraphLayout):
                 data_frame=dff,
                 locations='country',
                 color=time_class,
-                labels={time_class: time_class.replace("_", " ")},
+                labels=format_labels([time_class]),
                 color_continuous_scale=SEQUENTIAL_COLOR,
             )
 

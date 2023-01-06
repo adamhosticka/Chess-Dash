@@ -8,6 +8,7 @@ from datetime import datetime
 from app.gui.graph_layout import GraphLayout
 from app.gui.player.dash_components import time_class_selector
 from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR
+from app.utils.format_graph_labels import format_labels
 
 
 class RatingCorrelation(GraphLayout):
@@ -27,7 +28,7 @@ class RatingCorrelation(GraphLayout):
                 data_frame=self.df,
                 x=self.CORR,
                 y=time_class,
-                labels={time_class: time_class.replace("_", " ")},
+                labels=format_labels([time_class, self.CORR]),
                 color_continuous_scale=px.colors.sequential.Darkmint
             )
 

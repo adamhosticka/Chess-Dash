@@ -7,6 +7,7 @@ import plotly.express as px
 from app.gui.graph_layout import GraphLayout
 from app.helpers.gui_config import GAME_TIME_CLASS_CHECKLIST_ID
 from app.gui.game.dash_components import time_class_checklist
+from app.utils.format_graph_labels import format_labels
 
 
 class ResultDistribution(GraphLayout):
@@ -39,7 +40,7 @@ class ResultDistribution(GraphLayout):
                 hover_data=['count'],
                 barmode='group',
                 title=f"Result distribution for selected time classes",
-                labels={'time_class': 'time class'},
+                labels=format_labels(['time_class']),
             )
 
             return fig

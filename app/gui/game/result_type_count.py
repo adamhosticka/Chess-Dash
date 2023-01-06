@@ -5,6 +5,7 @@ import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
 from app.helpers.gui_config import SEQUENTIAL_COLOR
+from app.utils.format_graph_labels import format_labels
 
 
 class ResultTypeCount(GraphLayout):
@@ -15,13 +16,15 @@ class ResultTypeCount(GraphLayout):
         dff = self.df.groupby(['result_type', 'result'], as_index=False)['uuid'].count()
         dff.sort_values('uuid', inplace=True)
 
+        labels = format_labels(['result_type'])
+        labels.update({'uuid': 'count'})
         fig = px.bar(
             data_frame=dff,
             x='uuid',
             y='result_type',
             color='result',
             text='result',
-            labels={'uuid': 'count', 'result_type': "result type"},
+            labels=labels,
             title=f"Result type count",
             color_discrete_sequence=SEQUENTIAL_COLOR,
         )
