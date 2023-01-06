@@ -1,3 +1,5 @@
+"""Test format graph labels."""
+
 import pytest
 
 from app.utils.format_graph_labels import format_labels
@@ -18,6 +20,7 @@ from app.utils.format_graph_labels import format_labels
     ]
 )
 def test_format_labes(to_format: list, expected_formated: dict):
+    """Test if format labels function replaces underscore with a space."""
     formated = format_labels(to_format)
     assert formated == expected_formated
 
