@@ -1,39 +1,65 @@
 """"""
 
-import pandas as pd
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, Input, Output
 import plotly.express as px
-from app.gui.player import time_class_selector
+import pandas as pd
+from datetime import datetime
+
+from app.gui.graph_layout import GraphLayout
+from app.gui.player.dash_components import time_class_selector
+from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR
 
 
-def render(app: Dash, df: pd.DataFrame, corr: str) -> html.Div:
-    component_id = f'{corr}-followers_rating_correlation'
-    graph_id = f"{component_id}-graph"
+class RatingCorrelation(GraphLayout):
+    CALLBACK = True
+    CORR = ""
 
-    @app.callback(
-        Output(graph_id, 'figure'),
-        Input(f'time-class-selector-{component_id}', 'value')
-    )
-    def get_ratings_figure(time_class):
-        figure = px.scatter(
-            data_frame=df,
-            x=corr,
-            y=time_class,
-            labels={time_class: time_class.replace("_", " ")},
-            color_continuous_scale=px.colors.sequential.Darkmint
+    def get_children(self) -> list:
+        return [time_class_selector(self.df, self.COMPONENT_ID)]
+
+    def set_callback(self) -> html.Div:
+        @self.app.callback(
+            Output(self.GRAPH_ID, 'figure'),
+            Input(f'{PLAYER_TIME_CLASS_SELECTOR}-{self.COMPONENT_ID}', 'value')
         )
-
-        return figure
-
-    return html.Div(
-        id=component_id,
-        children=[
-            time_class_selector.render(app, df, component_id),
-            html.Div(
-                children=[
-                    dcc.Graph(id=graph_id)
-                ],
+        def get_ratings_figure(time_class):
+            figure = px.scatter(
+                data_frame=self.df,
+                x=self.CORR,
+                y=time_class,
+                labels={time_class: time_class.replace("_", " ")},
+                color_continuous_scale=px.colors.sequential.Darkmint
             )
-        ]
-    )
 
+            return figure
+
+
+class TacticsRatingCorrelation(RatingCorrelation):
+    COMPONENT_ID = 'tactics-rating-correlation'
+    GRAPH_ID = 'tactics-rating-correlation-graph'
+    CORR = 'tactics_highest_rating'
+
+
+class PuzzleRatingCorrelation(RatingCorrelation):
+    COMPONENT_ID = 'puzzle-rating-correlation'
+    GRAPH_ID = 'puzzle-rating-correlation-graph'
+    CORR = 'puzzle_rush_best_score'
+
+
+class JoinedRatingCorrelation(RatingCorrelation):
+    COMPONENT_ID = 'joined-rating-correlation'
+    GRAPH_ID = 'joined-rating-correlation-graph'
+    CORR = 'days_since_joined'
+
+    def __init__(self, app: Dash, df: pd.DataFrame):
+        super().__init__(app, df)
+        df_days_since_joined = df[df['joined'].notna()]
+        df_days_since_joined['days_since_joined'] = \
+            (datetime.today() - pd.to_datetime(df_days_since_joined['joined'], unit="s")).astype('timedelta64[h]') / 24
+        self.df = df_days_since_joined
+
+
+class FollowersRatingCorrelation(RatingCorrelation):
+    COMPONENT_ID = 'followers-rating-correlation'
+    GRAPH_ID = 'followers-rating-correlation-graph'
+    CORR = 'followers'

@@ -3,39 +3,35 @@
 import pandas as pd
 from dash import Dash, html, dcc, Input, Output
 import plotly.express as px
-from app.gui.player import time_class_selector
+
+from app.gui.graph_layout import GraphLayout
+from app.gui.player.dash_components import time_class_selector
+from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR, SEQUENTIAL_COLOR
 
 
-def render(app: Dash, df: pd.DataFrame) -> html.Div:
-    component_id = 'players_rating_per_country'
-    graph_id = f"{component_id}-graph"
+class PlayersRatingPerCountry(GraphLayout):
+    COMPONENT_ID = 'players-rating-per-country'
+    GRAPH_ID = 'players-rating-per-country-graph'
+    CALLBACK = True
 
-    @app.callback(
-        Output(graph_id, 'figure'),
-        Input(f'time-class-selector-{component_id}', 'value')
-    )
-    def get_ratings_figure(time_class):
-        dff = df.groupby("country")[time_class].mean().reset_index()
+    def get_children(self) -> list:
+        return [time_class_selector(self.df, self.COMPONENT_ID, True)]
 
-        figure = px.choropleth(
-            data_frame=dff,
-            locations='country',
-            color=time_class,
-            labels={time_class: time_class.replace("_", " ")},
-            color_continuous_scale=px.colors.sequential.Darkmint
+    def set_callback(self) -> html.Div:
+        @self.app.callback(
+            Output(self.GRAPH_ID, 'figure'),
+            Input(f'{PLAYER_TIME_CLASS_SELECTOR}-{self.COMPONENT_ID}', 'value')
         )
+        def get_callback_figure(time_class):
 
-        return figure
+            dff = self.df.groupby("country")[time_class].mean().reset_index()
 
-    return html.Div(
-        id=component_id,
-        children=[
-            time_class_selector.render(app, df, component_id, True),
-            html.Div(
-                children=[
-                    dcc.Graph(id=graph_id)
-                ],
+            fig = px.choropleth(
+                data_frame=dff,
+                locations='country',
+                color=time_class,
+                labels={time_class: time_class.replace("_", " ")},
+                color_continuous_scale=SEQUENTIAL_COLOR,
             )
-        ]
-    )
 
+            return fig

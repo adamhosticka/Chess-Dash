@@ -1,33 +1,25 @@
 """"""
 
-import pandas as pd
-from dash import Dash, html, dcc
+from dash import html
 import plotly.express as px
 
+from app.gui.graph_layout import GraphLayout
 
-def render(app: Dash, df: pd.DataFrame) -> html.Div:
-    component_id = 'players-count-per-country'
-    graph_id = f"{component_id}-graph"
 
-    players_count = df['player_id'].nunique()
-    df = df.groupby('country')['username'].count().reset_index()
+class PlayersCountPerCountry(GraphLayout):
+    COMPONENT_ID = 'players-count-per-country'
+    GRAPH_ID = 'players-count-per-country-graph'
+    GRAPH_WIDTH_PERCENT = 80
 
-    return html.Div(
-        id=component_id,
-        children=[
-            html.P(f"There are {players_count} unique players in the dataset from all around the world."),
-            html.Div(
-                dcc.Graph(
-                    id=graph_id,
-                    figure=px.choropleth(
-                        data_frame=df,
-                        title="Number of players per country",
-                        locations='country',
-                        color='username',
-                        labels={"username": "players count"},
-                        color_continuous_scale=px.colors.sequential.Darkmint
-                    )
-                )
-            )
-        ]
-    )
+    def get_figure(self) -> html.Div:
+
+        dff = self.df.groupby('country')['username'].count().reset_index()
+
+        return px.choropleth(
+            data_frame=dff,
+            title="Number of players per country",
+            locations='country',
+            color='username',
+            labels={"username": "players count"},
+            color_continuous_scale=px.colors.sequential.Darkmint
+        )

@@ -22,7 +22,7 @@ class ResultDistribution(GraphLayout):
             Output(self.GRAPH_ID, 'figure'),
             Input(f'{GAME_TIME_CLASS_CHECKLIST_ID}-{self.COMPONENT_ID}', 'value')
         )
-        def get_status_ratings_figure(time_classes):
+        def get_callback_figure(time_classes):
 
             dff = self.df.copy()
             if time_classes:

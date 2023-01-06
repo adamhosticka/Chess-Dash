@@ -1,43 +1,36 @@
 """"""
 
-import pandas as pd
-from dash import Dash, html, dcc, Input, Output
+from dash import html, Input, Output
 import plotly.express as px
-from app.gui.player import time_class_selector
+
+from app.gui.graph_layout import GraphLayout
+from app.gui.player.dash_components import time_class_selector
+from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR
 
 
-def render(app: Dash, df: pd.DataFrame) -> html.Div:
-    component_id = 'status_rating_correlation'
-    graph_id = f"{component_id}-graph"
+class StatusRatingCorrelation(GraphLayout):
+    COMPONENT_ID = 'status-rating-correlation'
+    GRAPH_ID = 'status-rating-correlation-graph'
+    CALLBACK = True
 
-    @app.callback(
-        Output(graph_id, 'figure'),
-        Input(f'time-class-selector-{component_id}', 'value')
-    )
-    def get_status_ratings_figure(time_class):
-        dff = df[df['status'].isin(['basic', 'premium'])]
-        dff = dff.groupby('status')[time_class].mean().reset_index()
+    def get_children(self) -> list:
+        return [time_class_selector(self.df, self.COMPONENT_ID)]
 
-        figure = px.bar(
-            data_frame=dff,
-            x='status',
-            y=time_class,
-            labels={time_class: f'{time_class.replace("_", " ")} mean'},
-            color_continuous_scale=px.colors.sequential.Aggrnyl,
+    def set_callback(self) -> html.Div:
+        @self.app.callback(
+            Output(self.GRAPH_ID, 'figure'),
+            Input(f'{PLAYER_TIME_CLASS_SELECTOR}-{self.COMPONENT_ID}', 'value')
         )
-        figure.update_traces(marker_color='#2bb585', width=0.40)
+        def get_callback_figure(time_class):
+            dff = self.df[self.df['status'].isin(['basic', 'premium'])]
+            dff = dff.groupby('status')[time_class].mean().reset_index()
 
-        return figure
-
-    return html.Div(
-        id=component_id,
-        children=[
-            time_class_selector.render(app, df, component_id),
-            html.Div(
-                style={"width": "50%", "margin": "auto"},
-                children=[
-                    dcc.Graph(id=graph_id)
-                ],
+            fig = px.bar(
+                data_frame=dff,
+                x='status',
+                y=time_class,
+                labels={time_class: f'{time_class.replace("_", " ")} mean'},
             )
-        ]
-    )
+            fig.update_traces(marker_color='#2bb585', width=0.40)
+
+            return fig
