@@ -6,6 +6,7 @@ import plotly.express as px
 from app.gui.graph_layout import GraphLayout
 from app.gui.player.dash_components import time_class_selector
 from app.helpers.gui_config import PLAYER_TIME_CLASS_SELECTOR, PLAYER_COLOR
+from app.src.format_data.gui_format_players import get_status_rating_correlation
 
 
 class StatusRatingCorrelation(GraphLayout):
@@ -22,8 +23,7 @@ class StatusRatingCorrelation(GraphLayout):
             Input(f'{PLAYER_TIME_CLASS_SELECTOR}-{self.COMPONENT_ID}', 'value')
         )
         def get_callback_figure(time_class):
-            dff = self.df[self.df['status'].isin(['basic', 'premium'])]
-            dff = dff.groupby('status')[time_class].mean().reset_index()
+            dff = get_status_rating_correlation(self.df, time_class, ['basic', 'premium'])
 
             fig = px.bar(
                 data_frame=dff,

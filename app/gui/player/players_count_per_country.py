@@ -4,6 +4,7 @@ from dash import html
 import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
+from app.src.format_data.gui_format_players import get_players_count_per_country
 
 
 class PlayersCountPerCountry(GraphLayout):
@@ -12,14 +13,12 @@ class PlayersCountPerCountry(GraphLayout):
     GRAPH_WIDTH_PERCENT = 80
 
     def get_figure(self) -> html.Div:
-
-        dff = self.df.groupby('country')['username'].count().reset_index()
+        dff = get_players_count_per_country(self.df)
 
         return px.choropleth(
             data_frame=dff,
             title="Number of players per country",
             locations='country',
-            color='username',
-            labels={"username": "players count"},
+            color='players count',
             color_continuous_scale=px.colors.sequential.Darkmint
         )

@@ -1,28 +1,19 @@
 """Layout for player data visualization."""
 
-import numpy as np
 import pandas as pd
-from datetime import datetime
 from dash import Dash, html
-from pycountry_convert import country_alpha2_to_country_name, country_name_to_country_alpha3
 
 from app.gui.player.players_count_per_country import PlayersCountPerCountry
 from app.gui.player.players_rating_per_country import PlayersRatingPerCountry
 from app.gui.player.status_rating_correlation import StatusRatingCorrelation
 from app.gui.player.rating_correlation import \
     TacticsRatingCorrelation, PuzzleRatingCorrelation, JoinedRatingCorrelation, FollowersRatingCorrelation
-
-
-def convert_codes(code):
-    try:
-        return country_name_to_country_alpha3(country_alpha2_to_country_name(code))
-    except:
-        return np.nan
+from app.src.format_data.gui_format_players import convert_alpha2_code_to_alpha3
 
 
 def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
 
-    df['country'] = df['country_code'].apply(convert_codes)
+    df['country'] = df['country_code'].apply(convert_alpha2_code_to_alpha3)
     df = df[df['player_id'].notna()]
 
     return html.Div(

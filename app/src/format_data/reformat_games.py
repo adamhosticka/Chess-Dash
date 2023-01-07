@@ -1,4 +1,4 @@
-"""Reformat games DataFrame.
+"""Reformat games from official Chess.com API format.
 Inspired/copied from https://www.kaggle.com/code/adityajha1504/those-features-won-t-engineer-themselves/notebook.
 """
 
