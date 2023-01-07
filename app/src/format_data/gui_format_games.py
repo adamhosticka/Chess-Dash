@@ -1,4 +1,5 @@
 """Format games DataFrame for gui graphs."""
+
 import pandas as pd
 
 

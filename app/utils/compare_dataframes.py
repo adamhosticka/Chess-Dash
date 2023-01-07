@@ -1,6 +1,6 @@
 """Compare dataframes."""
-from typing import Union
 
+from typing import Union
 import pandas as pd
 
 

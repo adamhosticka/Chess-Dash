@@ -6,11 +6,12 @@ from dash_bootstrap_components.themes import GRID
 
 from app.helpers.data_filenames import PLAYERS_FILENAME, REFORMATED_GAMES_FILENAME
 from app.utils.load_save_dataframe import load_dataframe
-from gui.player.player_layout import player_layout
-from gui.game.game_layout import game_layout
+from app.gui.player.player_layout import player_layout
+from app.gui.game.game_layout import game_layout
 
 
 def main():
+    """Run application"""
     app = Dash(
         __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}], external_stylesheets=[GRID]
     )

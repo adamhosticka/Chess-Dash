@@ -117,4 +117,5 @@ dmypy.json
 
 .idea
 
+cache-directory
 app/cache-directory
