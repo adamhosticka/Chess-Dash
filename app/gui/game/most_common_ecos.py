@@ -18,9 +18,8 @@ class MostCommonEcos(GraphLayout):
 
         fig = px.pie(
             data_frame=dff,
-            values='uuid',
-            names='eco_name',
-            labels={'uuid': 'count', 'eco_name': 'opening_name'},
+            values='count',
+            names='opening name',
             title=f"Most common {self.MOST_COMMON_CNT} openings",
             color_discrete_sequence=SEQUENTIAL_COLOR,
         )

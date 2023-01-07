@@ -25,7 +25,8 @@ def get_most_common_ecos(df: pd.DataFrame, cnt: int) -> pd.DataFrame:
     :rtype: pd.DataFrame.
     """
     dff = df.groupby('eco_name', as_index=False)['uuid'].count()
-    return dff.sort_values('uuid', ascending=False).head(cnt)
+    dff.rename(columns={'eco_name': 'opening name', 'uuid': 'count'}, inplace=True)
+    return dff.sort_values('count', ascending=False).head(cnt)
 
 
 def get_result_distribution(df: pd.DataFrame, time_classes: list) -> pd.DataFrame:
@@ -36,13 +37,10 @@ def get_result_distribution(df: pd.DataFrame, time_classes: list) -> pd.DataFram
     :return: Dataframe grouped by result and time_class, with those and count and result type (%) columns.
     :rtype: pd.DataFrame.
     """
-    dff = df.copy()
+    df_copy = df.copy()
     if time_classes:
-        dff = dff[dff['time_class'].isin(time_classes)]
-    dff = pd.DataFrame(dff.groupby(['result', 'time_class'], as_index=False)['uuid']
-                       .count()
-                       .rename(columns={'uuid': 'count'})
-                       .reset_index())
+        df_copy = df_copy[df_copy['time_class'].isin(time_classes)]
+    dff = df_copy.groupby(['result', 'time_class'], as_index=False)['uuid'].count().rename(columns={'uuid': 'count'})
     dff['result type (%)'] = 100 * dff['count'] / dff.groupby('time_class')['count'].transform('sum')
     return dff
 
@@ -55,7 +53,7 @@ def get_rated_rating_correlation(df: pd.DataFrame) -> pd.DataFrame:
     :rtype: pd.DataFrame.
     """
     dff = df.copy()
-    dff['rating_mean'] = df.loc[:, ['white_rating', 'black_rating']].sum(axis=1)
+    dff['rating_mean'] = df.loc[:, ['white_rating', 'black_rating']].sum(axis=1)/2
     return dff.groupby('rated')['rating_mean'].mean().reset_index()
 
 
@@ -81,13 +79,12 @@ def get_result_type_increment_correlation(df: pd.DataFrame, result_types: list) 
 
     # Obscure solution to prevent the FutureWarning and SettingWithCopyWarning
     df_copy = df.copy()
-    df_copy['increment'] = df['increment'].apply(pd.to_numeric)
+    df_copy['increment'] = df_copy['increment'].apply(pd.to_numeric)
     dff = df_copy[['increment', 'result_type', 'uuid']]
     dff = dff.loc[dff['increment'] < 60]
     if result_types:
         dff = dff.loc[dff['result_type'].isin(result_types)]
 
-    dff = pd.DataFrame(
-        dff.groupby(['increment', 'result_type'], as_index=False).agg(count=('uuid', 'count')).reset_index())
+    dff = dff.groupby(['increment', 'result_type'], as_index=False).agg(count=('uuid', 'count')).reset_index(drop=True)
     dff['result type %'] = 100 * dff['count'] / dff.groupby('increment')['count'].transform('sum')
     return dff.sort_values(by=['increment'])

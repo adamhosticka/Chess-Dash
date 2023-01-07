@@ -7,6 +7,7 @@ from typing import Union
 
 from app.src.format_data.gui_format_players import get_time_class_selector_options, convert_alpha2_code_to_alpha3, \
     get_players_count_and_rating_per_country, get_status_rating_correlation
+from app.utils.compare_dataframes import dataframes_equal
 
 PLAYERS_DF = pd.DataFrame({
     'player_id': [1, 2, 3, 4, 5, 6],
@@ -96,10 +97,7 @@ def test_convert_alpha2_code_to_alpha3(code: str, expected: Union[str, float]):
     ]
 )
 def test_get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: Union[str, None], expected: pd.DataFrame):
-    res = get_players_count_and_rating_per_country(df, time_class)
-    res_sorted = res.sort_values('players count').reset_index(drop=True)
-    expected_sorted = expected.sort_values('players count').reset_index(drop=True)
-    assert expected_sorted.equals(res_sorted)
+    assert dataframes_equal(expected, get_players_count_and_rating_per_country(df, time_class), 'players count')
 
 
 @pytest.mark.parametrize(
@@ -117,7 +115,4 @@ def test_get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: 
     ]
 )
 def test_get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: list, expected: pd.DataFrame):
-    res = get_status_rating_correlation(df, time_class, statuses)
-    res_sorted = res.sort_values('status').reset_index(drop=True)
-    expected_sorted = expected.sort_values('status').reset_index(drop=True)
-    assert expected_sorted.equals(res_sorted)
+    assert dataframes_equal(expected, get_status_rating_correlation(df, time_class, statuses), 'status')
