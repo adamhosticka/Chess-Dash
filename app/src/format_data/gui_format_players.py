@@ -35,28 +35,20 @@ def convert_alpha2_code_to_alpha3(code: str) -> Union[str, float]:
         return np.nan
 
 
-def get_players_count_per_country(df: pd.DataFrame) -> pd.DataFrame:
-    """Get players count per country.
-
-    :param: pd.DataFrame df: Dataframe with columns country and username.
-    :return: Dataframe grouped by country with column players count.
-    :rtype: pd.DataFrame.
-    """
-    return df.groupby('country')['username'].count().rename('players count').reset_index()
-
-
-def get_players_rating_per_country_and_time_class(df: pd.DataFrame, time_class: str) -> pd.DataFrame:
-    """Get players count per country from columns country and username.
+def get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: str = None) -> pd.DataFrame:
+    """Get players count and rating per country from columns country, username and `time_class` (rating).
 
     :param: pd.DataFrame df: Dataframe with columns country, username and one of chess `time_class` (rating).
     :param: str time_class: Chess time_class rating with Chess.com API format.
-    :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
+    :return: Dataframe grouped by country with columns players count and `time_class` (rating mean).
+    If time_class = None, return just number of players.
     :rtype: pd.DataFrame.
     """
-    return df.groupby("country") \
-        .agg({time_class: 'mean', 'username': 'size'}) \
-        .rename(columns={'username': 'number of players'}) \
-        .reset_index()
+    to_agg = {'username': 'size'}
+    if time_class:
+        to_agg[time_class] = 'mean'
+
+    return df.groupby("country").agg(to_agg).rename(columns={'username': 'players count'}).reset_index()
 
 
 def get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: list) -> pd.DataFrame:
