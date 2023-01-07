@@ -35,7 +35,7 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
 
     df['time'], df['increment'] = zip(*df['time_control'].apply(extract_time_and_increment))
 
-    df['eco_name'] = get_eco_names(df)
+    df['eco_name'] = get_eco_names(df['eco_url'])
 
     df['white_moves'], df['black_moves'], df['white_clock'], df['black_clock'] = \
         zip(*df['pgn'].apply(extract_moves_and_clock))
@@ -43,12 +43,7 @@ def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
 
     df = unite_results(df)
 
-    df.drop(
-        columns=['white_result', 'black_result', 'pgn', 'start_date', 'end_date',
-                 'start_time', 'end_time', 'time_control'],
-        axis=1,
-        inplace=True
-    )
+    df.drop(columns=['pgn', 'time_control'], axis=1, inplace=True)
 
     return df
 
@@ -80,17 +75,17 @@ def compute_datetimes(df: pd.DataFrame) -> pd.DataFrame:
     df['end_datetime'] = df['end_date'] + " " + df['end_time']
     df['start_datetime'] = pd.to_datetime(df['start_datetime'], format="%Y-%m-%d %H:%M:%S")
     df['end_datetime'] = pd.to_datetime(df['end_datetime'], format="%Y-%m-%d %H:%M:%S")
-    return df
+    return df.drop(columns=['start_date', 'end_date', 'start_time', 'end_time'])
 
 
-def get_eco_names(df: pd.DataFrame) -> pd.Series:
+def get_eco_names(eco_urls: pd.Series) -> pd.Series:
     """Get eco names from eco urls.
 
     :param: pd.DataFrame df: Dataframe with eco urls.
     :return: Series of eco names.
     :rtype: pd.Series.
     """
-    return df['eco_url'].apply(lambda x: x.split('/')[-1])
+    return eco_urls.apply(lambda x: x.split('/')[-1])
 
 
 def extract_moves_and_clock(pgn: str) -> tuple:
@@ -101,28 +96,45 @@ def extract_moves_and_clock(pgn: str) -> tuple:
     :rtype: tuple.
     """
     if pgn.find('{[') == -1:
-        return pgn.split("\n")[-2].split()[1::3], pgn.split("\n")[-2].split()[2::3], np.nan, np.nan
+        white_moves = pgn.split("\n")[-2].split()[1::3]
+        black_moves = pgn.split("\n")[-2].split()[2::3]
+        white_clock = np.nan
+        black_clock = np.nan
     else:
-        return pgn.split("\n")[-2].split()[1::8], pgn.split("\n")[-2].split()[5::8], \
-            [x[:-2] for x in pgn.split("\n")[-2].split()[3::8]], \
-            [x[:-2] for x in pgn.split("\n")[-2].split()[7::8]]
+        white_moves = pgn.split("\n")[-2].split()[1::8]
+        black_moves = pgn.split("\n")[-2].split()[5::8]
+        white_clock = [x[:-2] for x in pgn.split("\n")[-2].split()[3::8]]
+        black_clock = [x[:-2] for x in pgn.split("\n")[-2].split()[7::8]]
+    results = ['1-0', '0-1', '1/2-1/2']
+    if white_moves[-1] in results:
+        white_moves.pop()
+    if black_moves[-1] in results:
+        black_moves.pop()
+    return white_moves, black_moves, white_clock, black_clock
 
 
-def extract_time_and_increment(time_control: str):
+def extract_time_and_increment(time_control: str) -> tuple:
+    """Extract time and increment from time_control. Daily chess are in format 1/max_for_one_move. Those will be
+    extracted as time=1, increment=0.
+
+    :param: str time_control: Time control.
+    :return: Time and increment.
+    :rtype: tuple.
+    """
     if time_control[:2] == '1/':
         return 1, 0
     else:
         splitted = time_control.split('+')
         if len(splitted) == 1:
-            return splitted[0], 0
+            return int(splitted[0]), 0
         else:
-            return time_control.split('+')[0], time_control.split('+')[1]
+            return int(time_control.split('+')[0]), int(time_control.split('+')[1])
 
 
 def unite_results(df: pd.DataFrame) -> pd.DataFrame:
     """Combine white result, black result and result type into two columns.
 
-    :param: pd.DataFrame df: Dataframe with white_result and black_result.
+    :param: pd.DataFrame df: Dataframe with columns result, white_result and black_result.
     :return: Dataframe with result.
     :rtype: pd.DataFrame.
     """
@@ -131,7 +143,7 @@ def unite_results(df: pd.DataFrame) -> pd.DataFrame:
     df.loc[idx, 'result_type'] = df['black_result'][idx]
     df['result'] = df['result'].apply(
         lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
-    return df
+    return df.drop(columns=['white_result', 'black_result'])
 
 
 if __name__ == '__main__':
