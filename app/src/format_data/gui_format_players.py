@@ -9,8 +9,8 @@ from pycountry_convert import country_alpha2_to_country_name, country_name_to_co
 def get_time_class_selector_options(df: pd.DataFrame, tactics_and_puzzles: bool) -> list:
     """Get time class options for dropdown.
 
-    :arg: pd.DataFrame df: Player dataframe.
-    :arg: bool tactics_and_puzzles: True if tactics and puzzles should be included.
+    :param: pd.DataFrame df: Player dataframe.
+    :param: bool tactics_and_puzzles: True if tactics and puzzles should be included.
     :return: List of dropdown options.
     :rtype: list.
     """
@@ -26,7 +26,7 @@ def get_time_class_selector_options(df: pd.DataFrame, tactics_and_puzzles: bool)
 def convert_alpha2_code_to_alpha3(code: str) -> Union[str, float]:
     """Convert two digit country code to three digit country code.
 
-    :arg: str code: Two digit country code.
+    :param: str code: Two digit country code.
     :return: Three digit country code if code exists, numpy nan otherwise.
     """
     try:
@@ -38,7 +38,7 @@ def convert_alpha2_code_to_alpha3(code: str) -> Union[str, float]:
 def get_players_count_per_country(df: pd.DataFrame) -> pd.DataFrame:
     """Get players count per country.
 
-    :arg: pd.DataFrame df: Dataframe with columns country and username.
+    :param: pd.DataFrame df: Dataframe with columns country and username.
     :return: Dataframe grouped by country with column players count.
     :rtype: pd.DataFrame.
     """
@@ -48,8 +48,8 @@ def get_players_count_per_country(df: pd.DataFrame) -> pd.DataFrame:
 def get_players_rating_per_country_and_time_class(df: pd.DataFrame, time_class: str) -> pd.DataFrame:
     """Get players count per country from columns country and username.
 
-    :arg: pd.DataFrame df: Dataframe with columns country, username and one of chess `time_class` (rating).
-    :arg: str time_class: Chess time_class rating with Chess.com API format.
+    :param: pd.DataFrame df: Dataframe with columns country, username and one of chess `time_class` (rating).
+    :param: str time_class: Chess time_class rating with Chess.com API format.
     :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
     :rtype: pd.DataFrame.
     """
@@ -62,9 +62,9 @@ def get_players_rating_per_country_and_time_class(df: pd.DataFrame, time_class: 
 def get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: list) -> pd.DataFrame:
     """Get status rating correlation for time_class and statuses.
 
-    :arg: pd.DataFrame df: Dataframe with columns status and one of chess `time_class` (rating).
-    :arg: str time_class: Chess time_class rating with Chess.com API format.
-    :arg: list statuses: Selected statuses.
+    :param: pd.DataFrame df: Dataframe with columns status and one of chess `time_class` (rating).
+    :param: str time_class: Chess time_class rating with Chess.com API format.
+    :param: list statuses: Selected statuses.
     :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
     :rtype: pd.DataFrame.
     """

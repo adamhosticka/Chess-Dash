@@ -5,7 +5,7 @@ import pandas as pd
 def get_time_classes_and_checklist_options(df: pd.DataFrame) -> tuple:
     """Get time class checklist options.
 
-    :arg: pd.DataFrame df: Dataframe with time_class column.
+    :param: pd.DataFrame df: Dataframe with time_class column.
     :return: Checklist options.
     :rtype: tuple.
     """
@@ -19,8 +19,8 @@ def get_time_classes_and_checklist_options(df: pd.DataFrame) -> tuple:
 def get_most_common_ecos(df: pd.DataFrame, cnt: int) -> pd.DataFrame:
     """Get time class checklist options.
 
-    :arg: pd.DataFrame df: Dataframe with eco_name and uuid column.
-    :arg: int cnt: Number of most common ecos to return.
+    :param: pd.DataFrame df: Dataframe with eco_name and uuid column.
+    :param: int cnt: Number of most common ecos to return.
     :return: Dataframe with first `cnt` most common eco_names and their counts.
     :rtype: pd.DataFrame.
     """
@@ -31,8 +31,8 @@ def get_most_common_ecos(df: pd.DataFrame, cnt: int) -> pd.DataFrame:
 def get_result_distribution(df: pd.DataFrame, time_classes: list) -> pd.DataFrame:
     """Calculate result distribution for time_classes. If time_classes is empty, calculate for all of them.
 
-    :arg: pd.DataFrame df: Dataframe with eco_name and uuid column.
-    :arg: list time_classes: List of time_classes.
+    :param: pd.DataFrame df: Dataframe with eco_name and uuid column.
+    :param: list time_classes: List of time_classes.
     :return: Dataframe grouped by result and time_class, with those and count and result type (%) columns.
     :rtype: pd.DataFrame.
     """
@@ -50,7 +50,7 @@ def get_result_distribution(df: pd.DataFrame, time_classes: list) -> pd.DataFram
 def get_rated_rating_correlation(df: pd.DataFrame) -> pd.DataFrame:
     """Get correlation between rated and unrated games and player's ratings.
 
-    :arg: pd.DataFrame df: Dataframe with rated, white_rating and black_rating columns.
+    :param: pd.DataFrame df: Dataframe with rated, white_rating and black_rating columns.
     :return: Dataframe grouped by rated with rating_mean column.
     :rtype: pd.DataFrame.
     """
@@ -62,7 +62,7 @@ def get_rated_rating_correlation(df: pd.DataFrame) -> pd.DataFrame:
 def get_result_type_count(df: pd.DataFrame) -> pd.DataFrame:
     """Get result_type count per result_type for different results(White, Black, Draw).
 
-    :arg: pd.DataFrame df: Dataframe with result, result_type and uuid.
+    :param: pd.DataFrame df: Dataframe with result, result_type and uuid.
     :return: Dataframe grouped by result and result_type, with count column.
     :rtype: pd.DataFrame.
     """
@@ -73,7 +73,7 @@ def get_result_type_count(df: pd.DataFrame) -> pd.DataFrame:
 def get_result_type_increment_correlation(df: pd.DataFrame, result_types: list) -> pd.DataFrame:
     """Get correlation between game time increment and result_types.
 
-    :arg: pd.DataFrame df: Dataframe with increment, result_type and uuid columns.
+    :param: pd.DataFrame df: Dataframe with increment, result_type and uuid columns.
     :return: Dataframe grouped by increment and result_type, with count and 'result type %' columns,
     sorted by increment. Select all result_types if result_types arg is None.
     :rtype: pd.DataFrame.
