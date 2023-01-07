@@ -11,7 +11,6 @@ from app.gui.game.result_type_count import ResultTypeCount
 
 
 def game_layout(app: Dash, df: pd.DataFrame) -> html.Div:
-    print("Game_layout")
     return html.Div(
         id='game_layout',
         children=[

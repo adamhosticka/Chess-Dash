@@ -38,8 +38,8 @@ def main():
                     html.Div(
                         style={"width": "75%", "margin": "auto"},
                         children=[
-                            player_layout(app, players_df),
                             game_layout(app, games_df),
+                            player_layout(app, players_df),
                         ]
                     )
                 ]

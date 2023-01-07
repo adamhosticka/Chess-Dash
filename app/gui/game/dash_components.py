@@ -4,14 +4,11 @@ import pandas as pd
 from dash import html, dcc
 
 from app.helpers.gui_config import GAME_TIME_CLASS_CHECKLIST_ID
+from app.src.format_data.gui_format_games import get_time_classes_and_checklist_options
 
 
 def time_class_checklist(df: pd.DataFrame, parent_component_id: str) -> html.Div:
-    time_classes = df['time_class'].unique()
-    options = [
-        {"label": col.split("_")[0].title(), "value": col}
-        for col in time_classes
-    ]
+    options, time_classes = get_time_classes_and_checklist_options(df)
     return html.Div(
         dcc.Checklist(
             id=f"{GAME_TIME_CLASS_CHECKLIST_ID}-{parent_component_id}",

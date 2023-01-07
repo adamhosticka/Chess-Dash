@@ -1,10 +1,10 @@
 """"""
 
-import pandas as pd
 from dash import html
 import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
+from app.src.format_data.gui_format_games import get_result_type_increment_correlation
 
 
 class TimeoutIncrementCorrelation(GraphLayout):
@@ -12,21 +12,15 @@ class TimeoutIncrementCorrelation(GraphLayout):
     GRAPH_ID = 'timeout-increment-correlation-graph'
 
     def get_figure(self) -> html.Div:
-
-        dff = self.df[['increment', 'result_type', 'uuid']]
-        dff = dff[dff['result_type'].isin(['agreed', 'checkmated', 'win', 'timeout', 'resigned', 'repetition'])]
-
-        dff = pd.DataFrame(dff.groupby(['increment', 'result_type'], as_index=False).agg(count=('uuid', 'count')).reset_index())
-        dff['timeout games %'] = \
-            100 * dff['count'] / dff.groupby('increment')['count'].transform('sum')
-        dff['increment'] = dff['increment'].astype(int)
-        dff.sort_values(by=['increment'], inplace=True)
+        dff = get_result_type_increment_correlation(
+            self.df, ['agreed', 'checkmated', 'win', 'timeout', 'resigned'])
 
         fig = px.line(
             dff,
             x='increment',
-            y='timeout games %',
+            y='result type %',
             color='result_type',
+            hover_data=['count'],
             title='Players loosing to time in realtion to time increment',
             markers=True,
         )

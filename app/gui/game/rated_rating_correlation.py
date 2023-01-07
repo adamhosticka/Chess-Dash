@@ -4,6 +4,7 @@ import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
 from app.helpers.gui_config import GAME_COLOR
+from app.src.format_data.gui_format_games import get_rated_rating_correlation
 from app.utils.format_graph_labels import format_labels
 
 
@@ -12,9 +13,7 @@ class RatedRatingCorrelation(GraphLayout):
     GRAPH_ID = 'rated-rating-correlation-graph'
 
     def get_figure(self):
-        df_copy = self.df.copy()
-        df_copy['rating_mean'] = self.df.loc[:, ['white_rating', 'black_rating']].sum(axis=1)
-        dff = df_copy.groupby('rated')['rating_mean'].mean().reset_index()
+        dff = get_rated_rating_correlation(self.df)
 
         fig = px.bar(
             data_frame=dff,
