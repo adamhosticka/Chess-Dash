@@ -8,6 +8,7 @@ from app.helpers.api_endpoints import PLAYER_PROFILE_ENDPOINT, PLAYER_STATS_ENDP
 from app.helpers.players_keep_columns_rename import PLAYERS_KEEP_COLUMNS_RENAME
 from app.src.fetch_data.fetch_base import FetchBase
 from app.helpers.data_filenames import PLAYERS_FILENAME
+from app.utils.dataframe_utils import load_dataframe
 
 
 class FetchPlayer(FetchBase):
@@ -15,7 +16,7 @@ class FetchPlayer(FetchBase):
     KEEP_COLUMNS_RENAME = PLAYERS_KEEP_COLUMNS_RENAME
 
     def __init__(self, players_cnt: int = 100):
-        self.players = self.load_dataframe(PLAYERS_FILENAME)
+        self.players = load_dataframe(PLAYERS_FILENAME)
         self.players_cnt = players_cnt
 
     def fetch_data(self) -> pd.DataFrame:

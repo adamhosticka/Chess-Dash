@@ -5,7 +5,7 @@ from dash import Dash, html
 from dash_bootstrap_components.themes import GRID
 
 from app.helpers.data_filenames import PLAYERS_FILENAME, REFORMATED_GAMES_FILENAME
-from app.utils.load_save_dataframe import load_dataframe
+from app.utils.dataframe_utils import load_dataframe
 from app.gui.player.player_layout import player_layout
 from app.gui.game.game_layout import game_layout
 

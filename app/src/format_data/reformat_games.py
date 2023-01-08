@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 from app.helpers.data_filenames import GAMES_FILENAME, REFORMATED_GAMES_FILENAME
-from app.utils.load_save_dataframe import load_dataframe, save_dataframe
+from app.utils.dataframe_utils import load_dataframe, save_dataframe
 
 
 def save_reformated_games():

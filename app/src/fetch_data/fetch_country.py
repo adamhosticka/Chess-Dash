@@ -8,6 +8,7 @@ from app.helpers.data_filenames import COUNTRIES_FILENAME
 from app.helpers.iso_codes import ISO_CODES
 from app.helpers.api_endpoints import COUNTRY_ENDPOINT
 from app.src.fetch_data.fetch_base import FetchBase
+from app.utils.dataframe_utils import create_dataframe_from_list
 
 
 class FetchCountry(FetchBase):
@@ -19,4 +20,4 @@ class FetchCountry(FetchBase):
             country = self.fetch_item(COUNTRY_ENDPOINT.format(iso=iso_code))
             if country:
                 countries.append(country)
-        return self.create_dataframe_from_list(countries)
+        return create_dataframe_from_list(countries)

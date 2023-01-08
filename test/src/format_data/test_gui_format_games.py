@@ -6,7 +6,7 @@ import numpy as np
 
 from app.src.format_data.gui_format_games import get_time_classes_and_checklist_options, get_most_common_ecos, \
     get_result_distribution, get_rated_rating_correlation, get_result_type_count, get_result_type_increment_correlation
-from app.utils.compare_dataframes import dataframes_equal
+from app.utils.dataframe_utils import dataframes_equal
 
 GAMES_DF = pd.DataFrame({
     'uuid': [1, 2, 3, 4, 5, 6],

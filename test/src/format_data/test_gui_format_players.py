@@ -7,7 +7,7 @@ from typing import Union
 
 from app.src.format_data.gui_format_players import get_time_class_selector_options, convert_alpha2_code_to_alpha3, \
     get_players_count_and_rating_per_country, get_status_rating_correlation
-from app.utils.compare_dataframes import dataframes_equal
+from app.utils.dataframe_utils import dataframes_equal
 
 PLAYERS_DF = pd.DataFrame({
     'player_id': [1, 2, 3, 4, 5, 6],

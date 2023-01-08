@@ -7,7 +7,7 @@ import json
 import pandas as pd
 
 from app.helpers.api_endpoints import REQUEST_HEADERS
-from app.utils.load_save_dataframe import load_dataframe, save_dataframe
+from app.utils.dataframe_utils import load_dataframe, save_dataframe
 
 
 class FetchBase:
@@ -45,35 +45,6 @@ class FetchBase:
             return None
         return json.loads(res.text)
 
-    @staticmethod
-    def create_dataframe_from_list(data: list) -> pd.DataFrame:
-        """Save list of data into dataframe.
-
-        :param list data: Data to save.
-        :return: Dataframe.
-        :rtype: pd.DataFrame.
-        """
-        return pd.DataFrame.from_dict(data)
-
-    @staticmethod
-    def load_dataframe(filename: str) -> pd.DataFrame:
-        """Call load_dataframe function from utils.
-
-        :param: str filename: Name of file to load.
-        :return: Dataframe.
-        :rtype: pd.DataFrame.
-        """
-        return load_dataframe(filename)
-
-    @staticmethod
-    def save_dataframe(dataframe: pd.DataFrame, filename: str):
-        """Call save_dataframe function from utils.
-
-        :param: pd.Dataframe dataframe: Dataframe to save.
-        :param: str filename: Filename to save dataframe to.
-        """
-        save_dataframe(dataframe, filename)
-
     def _save_data(self):
         """Save data to file."""
-        self.save_dataframe(self.dataframe, self.FILE_NAME)
+        save_dataframe(self.dataframe, self.FILE_NAME)

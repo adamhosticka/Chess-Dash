@@ -5,7 +5,7 @@ from flexmock import flexmock
 
 from app.src.fetch_data.fetch_country import FetchCountry
 from app.helpers.iso_codes import ISO_CODES
-from app.utils.compare_dataframes import dataframes_equal
+from app.utils.dataframe_utils import dataframes_equal
 
 FETCHED_ITEM = {"@id": "https://api.chess.com/pub/country/IT", "code": "IT", "name": "Italy"}
 
