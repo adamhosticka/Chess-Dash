@@ -18,7 +18,7 @@ class FetchCountryPlayer(FetchBase):
         self.countries = self.load_dataframe(os.path.join(DATA_DIR, COUNTRIES_FILENAME))
         self.players = self.load_dataframe(os.path.join(DATA_DIR, PLAYERS_FILENAME))
 
-    def fetch_data(self):
+    def fetch_data(self) -> pd.DataFrame:
         """Fetch player usernames for each country, save API status response to countries and usernames to players."""
         players = []
         for code in self.countries['code']:
@@ -29,13 +29,8 @@ class FetchCountryPlayer(FetchBase):
                         'username': player,
                         'country_code': code,
                     })
-        if not players:
-            exit(1)
-        self.dataframe = self.create_dataframe_from_list(players)
-        if not self.players.empty and not self.dataframe.empty:
-            self.dataframe = pd.merge(self.players, self.dataframe, how='outer')
-        self.dataframe = self.dataframe[~self.dataframe.duplicated(subset='username')]
-
-
-if __name__ == '__main__':
-    FetchCountryPlayer().run()
+        res = self.create_dataframe_from_list(players)
+        if not self.players.empty and not res.empty:
+            res = pd.merge(self.players, res, how='outer')
+        res = res[~res.duplicated(subset='username')]
+        return res

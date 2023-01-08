@@ -18,11 +18,15 @@ class FetchBase:
 
     def run(self):
         """Fetch data and export them to csv."""
-        self.fetch_data()
+        self.dataframe = self.fetch_data()
         self._save_data()
 
-    def fetch_data(self):
-        """Call fetch_item, modify the return value and save it to dataframe."""
+    def fetch_data(self) -> pd.DataFrame:
+        """Call fetch_item, modify the return values and return them.
+
+        :return: Dataframe with fetched data.
+        :rtype: pd.DataFrame.
+        """
         pass
 
     @staticmethod

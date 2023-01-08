@@ -82,7 +82,7 @@ def get_result_type_increment_correlation(df: pd.DataFrame, result_types: list) 
     df_copy = df.copy()
     df_copy['increment'] = df_copy['increment'].apply(pd.to_numeric)
     dff = df_copy[['increment', 'result_type', 'uuid']]
-    dff = dff.loc[dff['increment'] < 60]
+    dff = dff.loc[dff['increment'] <= 10]
     if result_types:
         dff = dff.loc[dff['result_type'].isin(result_types)]
 

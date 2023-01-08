@@ -15,7 +15,6 @@ def load_dataframe(filename: str) -> pd.DataFrame:
     """
     if os.path.isfile(os.path.join(DATA_DIR, filename)):
         return pd.read_pickle(os.path.join(DATA_DIR, filename))
-    print(f"Couldnt' find dataframe with filename {filename} -> returning empty dataframe")
     return pd.DataFrame()
 
 

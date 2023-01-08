@@ -19,7 +19,7 @@ class FetchGame(FetchBase):
         self.year = year
         self.month = month
 
-    def fetch_data(self):
+    def fetch_data(self) -> pd.DataFrame:
         games = []
         saved_users = []
         games_date_df_col = f'games_saved_{self.year}_{self.month}'
@@ -46,19 +46,5 @@ class FetchGame(FetchBase):
 
         games_df = pd.json_normalize(games, sep='_')
         if self.games.empty:
-            self.dataframe = games_df
-        else:
-            self.dataframe = pd.merge(self.games, games_df, how='outer')
-
-
-if __name__ == '__main__':
-    FetchGame(100).run()
-    # for i in range(10):
-    #     print(f"{i}. jizda")
-    #     try:
-    #         FetchGame(100).run()
-    #     except Exception as e:
-    #         import time
-    #         print(f"Skoncila s chybou {str(e)}.")
-    #         print(repr(e))
-    #         time.sleep(61)
+            return games_df
+        return pd.merge(self.games, games_df, how='outer')

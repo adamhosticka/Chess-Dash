@@ -12,6 +12,8 @@ from app.src.format_data.reformat_games import save_reformated_games
 
 def fetch_item(data_class, print_info: bool, cnt: int = 1):
     start_time = time.time()
+    if print_info:
+        print(f"Fetching {str(data_class).split('.')[-1][:-2]}")
     for i in range(cnt):
         if print_info and cnt != 1:
             print(f"{i + 1}. stovka.")
@@ -21,11 +23,11 @@ def fetch_item(data_class, print_info: bool, cnt: int = 1):
             if print_info:
                 print(f"Skoncila s chybou {repr(e)}.")
     if print_info:
-        print(f"Fetching {str(data_class)} took {time.time() - start_time} seconds")
+        print(f"Fetching {str(data_class).split('.')[-1][:-2]} took {time.time() - start_time} seconds")
 
 
-def fetch_data(fetch_countries: bool = False, fetch_country_players: bool = False, hundreds_of_players: int = 0,
-               hundreds_of_games: int = 0, reformat_and_save: bool = False, print_info: bool = False):
+def fetch_data(fetch_all_and_reformat: bool, fetch_countries: bool, fetch_country_players: bool,
+               hundreds_of_players: int, hundreds_of_games: int, reformat_and_save: bool, disable_print_info: bool):
     """Fetch data from Chess.com API based on input switches.
 
     :param: bool fetch_countries: Fetch countries switch.
@@ -35,24 +37,41 @@ def fetch_data(fetch_countries: bool = False, fetch_country_players: bool = Fals
     :param: bool reformat_and_save: Reformat and save games switch.
     :param: bool print_info: Print fetching info switch.
     """
+    if fetch_all_and_reformat:
+        fetch_countries = True
+        fetch_country_players = True
+        hundreds_of_players = 10
+        hundreds_of_games = 5
+        reformat_and_save = True
+
+    if disable_print_info:
+        print("Fetching...")
+
     if fetch_countries:
-        fetch_item(FetchCountry, print_info)
+        fetch_item(FetchCountry, disable_print_info)
 
     if fetch_country_players:
-        fetch_item(FetchCountryPlayer, print_info)
+        fetch_item(FetchCountryPlayer, disable_print_info)
 
     if hundreds_of_players > 0:
-        fetch_item(FetchPlayer, print_info, hundreds_of_players)
+        fetch_item(FetchPlayer, disable_print_info, hundreds_of_players)
 
     if hundreds_of_games > 0:
-        fetch_item(FetchGame, print_info, hundreds_of_games)
+        fetch_item(FetchGame, disable_print_info, hundreds_of_games)
 
     if reformat_and_save:
+        if disable_print_info:
+            print("Reformating games...")
         save_reformated_games()
 
 
 if __name__ == '__main__':
     parser = ArgumentParser(description="Fetch data from Chess.com API and reformat games.")
+    parser.add_argument("-far", "--fetch-all-and-reformat",
+                        default=False,
+                        action='store_true',
+                        help="Fetch countries, players (1000) and games (500) - then reformat them. "
+                             "Takes around twenty minutes.")
     parser.add_argument("-fc", "--fetch-countries",
                         default=False,
                         action='store_true',
@@ -63,22 +82,22 @@ if __name__ == '__main__':
                         help="Fetch country players")
     parser.add_argument("-FP", "--hundreds-of-players",
                         default=0,
-                        choices=range(0, 50),
+                        choices=range(0, 51),
                         type=int,
                         help="Number of hundreds of players to fetch")
     parser.add_argument("-FG", "--hundreds-of-games",
                         default=0,
-                        choices=range(0, 50),
+                        choices=range(0, 51),
                         type=int,
                         help="Number of hundreds of games to fetch")
     parser.add_argument("-r", "--reformat-and-save",
                         default=False,
                         action='store_true',
                         help="Reformat fetched games after fetching and save them to another file")
-    parser.add_argument("-p", "--print-info",
-                        default=False,
+    parser.add_argument("-p", "--disable-print-info",
+                        default=True,
                         action='store_true',
-                        help="Print fetching information")
+                        help="Disable printing fetching information")
     args = parser.parse_args()
 
     fetch_data(**vars(args))

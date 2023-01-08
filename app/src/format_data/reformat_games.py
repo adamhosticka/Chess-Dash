@@ -113,9 +113,9 @@ def extract_moves_and_clock(pgn: str) -> tuple:
         white_clock = [x[:-2] for x in pgn.split("\n")[-2].split()[3::8]]
         black_clock = [x[:-2] for x in pgn.split("\n")[-2].split()[7::8]]
     results = ['1-0', '0-1', '1/2-1/2']
-    if white_moves[-1] in results:
+    if white_moves and white_moves[-1] in results:
         white_moves.pop()
-    if black_moves[-1] in results:
+    if black_moves and black_moves[-1] in results:
         black_moves.pop()
     return white_moves, black_moves, white_clock, black_clock
 

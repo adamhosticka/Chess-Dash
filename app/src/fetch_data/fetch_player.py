@@ -14,11 +14,11 @@ class FetchPlayer(FetchBase):
     FILE_NAME = PLAYERS_FILENAME
     KEEP_COLUMNS_RENAME = PLAYERS_KEEP_COLUMNS_RENAME
 
-    def __init__(self, players_cnt: int = 10):
+    def __init__(self, players_cnt: int = 100):
         self.players = self.load_dataframe(PLAYERS_FILENAME)
         self.players_cnt = players_cnt
 
-    def fetch_data(self):
+    def fetch_data(self) -> pd.DataFrame:
         players = []
 
         original_players_plain = True
@@ -28,11 +28,7 @@ class FetchPlayer(FetchBase):
         else:
             fetch_players_df = self.players.sample(n=self.players_cnt)
 
-        # cnt = 0
         for username, country_code in fetch_players_df[['username', 'country_code']].itertuples(index=False):
-            # cnt += 1
-            # print(cnt)
-
             player = self.fetch_item(PLAYER_PROFILE_ENDPOINT.format(username=username))
             if player:
                 player_stats = self.fetch_item(PLAYER_STATS_ENDPOINT.format(username=username))
@@ -40,30 +36,18 @@ class FetchPlayer(FetchBase):
                 player['country_code'] = country_code
                 players.append(player)
 
-        self.dataframe = pd.json_normalize(players, sep='_')
-        keep_columns_intersected = list(set(self.KEEP_COLUMNS_RENAME.keys()).intersection(set(self.dataframe.columns)))
-        self.dataframe = self.dataframe[keep_columns_intersected]
+        res = pd.json_normalize(players, sep='_')
+        keep_columns_intersected = list(set(self.KEEP_COLUMNS_RENAME.keys()).intersection(set(res.columns)))
+        res = res[keep_columns_intersected]
         keep_columns_intersected_rename = {k: v for k, v in self.KEEP_COLUMNS_RENAME.items()
                                            if k in keep_columns_intersected}
-        self.dataframe.rename(columns=keep_columns_intersected_rename, inplace=True, errors='ignore')
+        res.rename(columns=keep_columns_intersected_rename, inplace=True, errors='ignore')
 
         if original_players_plain:
-            self.dataframe = pd.merge(self.players, self.dataframe, how='outer')
+            return pd.merge(self.players, res, how='outer')
         else:
-            self.dataframe = pd.merge(self.players, self.dataframe, how='outer')
-            self.dataframe = self.dataframe[~(
-                      self.dataframe.duplicated(subset='username', keep=False) &
-                      self.dataframe['player_id'].isna()
+            res = pd.merge(self.players, res, how='outer')
+            return res[~(
+                      res.duplicated(subset='username', keep=False) &
+                      res['player_id'].isna()
             )]
-
-
-if __name__ == '__main__':
-    for i in range(1):
-        print(f"{i}. jizda")
-        try:
-            FetchPlayer(8).run()
-        except Exception as e:
-            import time
-            print(f"Skoncila s chybou {str(e)}.")
-            print(repr(e))
-            time.sleep(61)
