@@ -30,6 +30,7 @@ class PlayersRatingPerCountry(GraphLayout):
 
             fig = px.choropleth(
                 data_frame=dff,
+                title='Rating mean per country',
                 locations='country',
                 color=time_class,
                 hover_data=['players count'],
@@ -38,6 +39,11 @@ class PlayersRatingPerCountry(GraphLayout):
             )
 
             return fig
+
+    @staticmethod
+    def set_text():
+        return html.P("This graph displays rating mean per country, but we would have to have more players "
+                      "for any kind of a conclusion.")
 
     def get_figure(self) -> html.Div:
         # Disable pylint E1111

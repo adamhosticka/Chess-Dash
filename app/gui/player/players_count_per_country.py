@@ -24,3 +24,7 @@ class PlayersCountPerCountry(GraphLayout):
             color='players count',
             color_continuous_scale=px.colors.sequential.Darkmint
         )
+
+    @staticmethod
+    def set_text():
+        return html.P("This graph is just to have a grasp of where players of our dataset are from.")

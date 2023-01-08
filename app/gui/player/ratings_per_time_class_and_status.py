@@ -2,7 +2,6 @@
 
 from dash import html
 import plotly.express as px
-import pandas as pd
 
 from app.gui.graph_layout import GraphLayout
 from app.src.format_data.gui_format_players import get_ratings_per_time_class_and_status
@@ -11,8 +10,8 @@ from app.src.format_data.gui_format_players import get_ratings_per_time_class_an
 class RatingsPerTimeClassAndStatus(GraphLayout):
     """Graph for displaying ratings statictics per time class."""
 
-    COMPONENT_ID = 'time-class-ratings'
-    GRAPH_ID = 'time-class-ratings-graph'
+    COMPONENT_ID = 'ratings-time-class-status'
+    GRAPH_ID = 'ratings-time-class-status-graph'
 
     def get_figure(self) -> html.Div:
         dff = get_ratings_per_time_class_and_status(self.df)
@@ -24,3 +23,7 @@ class RatingsPerTimeClassAndStatus(GraphLayout):
             y='rating',
             color='status'
         )
+
+    @staticmethod
+    def set_text():
+        return html.P("As I expected, players with premium status would have higher rating across all time classes.")

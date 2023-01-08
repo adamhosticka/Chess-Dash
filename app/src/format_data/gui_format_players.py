@@ -51,33 +51,26 @@ def get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: str =
     return df.groupby("country").agg(to_agg).rename(columns={'username': 'players count'}).reset_index()
 
 
-def get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: list) -> pd.DataFrame:
-    """Get status rating correlation for time_class and statuses.
+def get_ratings_per_time_class_and_status(df: pd.DataFrame, time_classes: list = None,
+                                          statuses: list = None) -> pd.DataFrame:
+    """Get ratings per time_class and statuses.
 
     :param: pd.DataFrame df: Dataframe with columns status and one of chess `time_class` (rating).
-    :param: str time_class: Chess time_class rating with Chess.com API format.
+    :param: list time_classes: Chess time_class time_classes (ratings).
     :param: list statuses: Selected statuses.
     :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
     :rtype: pd.DataFrame.
     """
-    dff = df[df['status'].isin(statuses)]
-    return dff.groupby('status')[time_class].mean().reset_index()
+    if time_classes is None:
+        time_classes = ['daily_rating', 'blitz_rating', 'rapid_rating', 'bullet_rating']
+    if statuses is None:
+        statuses = ['basic', 'premium']
 
-
-def get_ratings_per_time_class_and_status(df: pd.DataFrame) -> pd.DataFrame:
-    """Get status rating correlation for time_class and statuses.
-
-    :param: pd.DataFrame df: Dataframe with columns status and one of chess `time_class` (rating).
-    :param: str time_class: Chess time_class rating with Chess.com API format.
-    :param: list statuses: Selected statuses.
-    :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
-    :rtype: pd.DataFrame.
-    """
-    df = df[df['status'].isin(['basic', 'premium'])]
+    df = df[df['status'].isin(statuses)]
     return pd.melt(
         df,
         id_vars=['username', 'status'],
-        value_vars=['daily_rating', 'blitz_rating', 'rapid_rating', 'bullet_rating'],
+        value_vars=time_classes,
         var_name='time class',
         value_name='rating'
     )

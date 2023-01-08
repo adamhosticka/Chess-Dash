@@ -6,8 +6,9 @@ import pandas as pd
 from typing import Union
 
 from app.src.format_data.gui_format_players import get_time_class_selector_options, convert_alpha2_code_to_alpha3, \
-    get_players_count_and_rating_per_country, get_status_rating_correlation
+    get_players_count_and_rating_per_country, get_ratings_per_time_class_and_status
 from app.utils.dataframe_utils import dataframes_equal
+
 
 PLAYERS_DF = pd.DataFrame({
     'player_id': [1, 2, 3, 4, 5, 6],
@@ -96,23 +97,35 @@ def test_convert_alpha2_code_to_alpha3(code: str, expected: Union[str, float]):
         )
     ]
 )
-def test_get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: Union[str, None], expected: pd.DataFrame):
+def test_get_players_count_and_rating_per_country(df: pd.DataFrame, time_class: Union[str, None],
+                                                  expected: pd.DataFrame):
     assert dataframes_equal(expected, get_players_count_and_rating_per_country(df, time_class), 'players count')
 
 
 @pytest.mark.parametrize(
-    ['df', 'time_class', 'statuses', 'expected'],
+    ['df', 'time_classes', 'statuses', 'expected'],
     [
         (
             PLAYERS_DF,
-            'blitz_rating',
+            ['blitz_rating', 'daily_rating'],
             ['basic', 'premium'],
             pd.DataFrame({
-                'status': ['basic', 'premium'],
-                'blitz_rating': [300.0, 350.0]
+                'username': ['Adam', 'Johnas', 'Jozko', 'Milana', 'Bart', 'Metodej',
+                             'Adam', 'Johnas', 'Jozko', 'Milana', 'Bart', 'Metodej'],
+                'status': ['premium', 'premium', 'basic', 'premium', 'premium', 'basic',
+                           'premium', 'premium', 'basic', 'premium', 'premium', 'basic'],
+                'time class': ['blitz_rating', 'blitz_rating', 'blitz_rating', 'blitz_rating', 'blitz_rating',
+                               'blitz_rating', 'daily_rating', 'daily_rating', 'daily_rating', 'daily_rating',
+                               'daily_rating', 'daily_rating'],
+                'rating': [100, 200, 500, 200, 900, 100, 300, 900, 100, 100, 200, 500]
             })
         )
     ]
 )
-def test_get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: list, expected: pd.DataFrame):
-    assert dataframes_equal(expected, get_status_rating_correlation(df, time_class, statuses), 'status')
+def test_ratings_per_time_class_and_status(df: pd.DataFrame, time_classes: list, statuses: list,
+                                           expected: pd.DataFrame):
+    assert dataframes_equal(
+        expected,
+        get_ratings_per_time_class_and_status(df, time_classes, statuses),
+        ['username', 'status']
+    )
