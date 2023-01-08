@@ -28,3 +28,8 @@ class MostCommonEcos(GraphLayout):
         fig.update_traces(hoverinfo='label+percent', textinfo='value')
 
         return fig
+
+    @staticmethod
+    def set_text():
+        return html.P("Lets open with openings. Surprisingly, well-known openings like Sicilian defense or Italian "
+                      "game aren't on our list. It must be just a lack of data...")

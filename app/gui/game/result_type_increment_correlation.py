@@ -19,12 +19,18 @@ class ResultTypeIncrementCorrelation(GraphLayout):
 
         fig = px.line(
             dff,
+            title='Result type in relation to time increment',
             x='increment',
             y='result type %',
             color='result_type',
             hover_data=['count'],
-            title='Players loosing to time in realtion to time increment',
             markers=True,
         )
 
         return fig
+
+    @staticmethod
+    def set_text():
+        return html.P("I expected timeout to decrease with increasing time increment, which it kind of did. "
+                      "I also expected draws (agreed) and resignition to increase, since there is less time pressure, "
+                      "but I don't have enough data for that.")

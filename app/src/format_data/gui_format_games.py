@@ -42,7 +42,7 @@ def get_result_distribution(df: pd.DataFrame, time_classes: list) -> pd.DataFram
     if time_classes:
         df_copy = df_copy[df_copy['time_class'].isin(time_classes)]
     dff = df_copy.groupby(['result', 'time_class'], as_index=False)['uuid'].count().rename(columns={'uuid': 'count'})
-    dff['result type (%)'] = 100 * dff['count'] / dff.groupby('time_class')['count'].transform('sum')
+    dff['result (%)'] = 100 * dff['count'] / dff.groupby('time_class')['count'].transform('sum')
     return dff
 
 

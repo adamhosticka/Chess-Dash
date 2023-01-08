@@ -28,11 +28,11 @@ def game_layout(app: Dash, df: pd.DataFrame) -> html.Div:
             html.Hr(),
             html.Div(
                 children=[
-                    ResultDistribution(app, df).render(),
-                    RatedRatingCorrelation(app, df).render(),
                     MostCommonEcos(app, df).render(),
-                    ResultTypeIncrementCorrelation(app, df).render(),
+                    ResultDistribution(app, df).render(),
                     ResultTypeCount(app, df).render(),
+                    ResultTypeIncrementCorrelation(app, df).render(),
+                    RatedRatingCorrelation(app, df).render(),
                 ]
             )
         ]

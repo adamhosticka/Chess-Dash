@@ -24,6 +24,10 @@ Run the following command to get information about how to fetch data.
 
 ``python3 ./fetch_data.py -h``
 
+If you want the same data as I had, download them at my
+[Google Drive](https://drive.google.com/drive/folders/1dgBMUqg1FfT6FbSC7lRpOqctkeQG6Yrf?usp=sharing) and
+place them into app.data.
+
 ## Running tests
 
 Run the following command to run tests

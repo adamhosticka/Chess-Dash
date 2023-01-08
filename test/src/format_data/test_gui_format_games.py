@@ -77,7 +77,7 @@ def test_get_most_common_ecos(df: pd.DataFrame, cnt: int, expected: pd.DataFrame
                 'result': ['Black', 'White', 'White', 'Draw', 'White'],
                 'time_class': ['rapid', 'daily', 'blitz', 'bullet', 'rapid'],
                 'count': [1, 1, 2, 1, 1],
-                'result type (%)': [50.0, 100.0, 100.0, 100.0, 50.0],
+                'result (%)': [50.0, 100.0, 100.0, 100.0, 50.0],
             })
         )
     ]

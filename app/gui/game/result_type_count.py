@@ -32,3 +32,9 @@ class ResultTypeCount(GraphLayout):
         # fig.update_layout(barmode='group', bargap=0.3, bargroupgap=0)
 
         return fig
+
+    @staticmethod
+    def set_text():
+        return html.P("As we can see, resignation is the most common result type in chess. That would make sense, "
+                      "since one can usually tell when there is no change to win. "
+                      "Although I did not expect so many stalemates.")

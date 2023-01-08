@@ -30,7 +30,7 @@ class ResultDistribution(GraphLayout):
             fig = px.bar(
                 data_frame=dff,
                 x='time_class',
-                y='result type (%)',
+                y='result (%)',
                 color='result',
                 hover_data=['count'],
                 barmode='group',
@@ -39,6 +39,11 @@ class ResultDistribution(GraphLayout):
             )
 
             return fig
+
+    @staticmethod
+    def set_text():
+        return html.P("As expected, white has the edge in general. But I did expect longer games to end in a draw "
+                      "more frequently.")
 
     def get_figure(self) -> html.Div:
         # Disable pylint E1111

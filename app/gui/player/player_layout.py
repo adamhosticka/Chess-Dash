@@ -35,9 +35,10 @@ def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
                     PlayersCountPerCountry(app, df).render(),
                     PlayersRatingPerCountry(app, df).render(),
                     RatingsPerTimeClassAndStatus(app, df).render(),
-                    html.H4("These scatter plots were my way to trying to prove, that with increasing tactics highest "
-                            "rating, puzzle rush best score and days since joined also increases the rating of a "
-                            "player. I think it shows that fact atleast a little bit."),
+                    html.Section("These scatter plots were my way to trying to prove, that with increasing tactics "
+                                 "highest rating, puzzle rush best score and days since joined also increases "
+                                 "the rating of a player."),
+                    html.P("I think it shows that fact atleast a little bit."),
                     TacticsRatingCorrelation(app, df).render(),
                     PuzzleRatingCorrelation(app, df).render(),
                     JoinedRatingCorrelation(app, df).render(),
