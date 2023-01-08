@@ -1,6 +1,7 @@
 """
 Fetch countries information from Chess.com API and save it to a file.
 """
+
 import pandas as pd
 
 from app.helpers.data_filenames import COUNTRIES_FILENAME

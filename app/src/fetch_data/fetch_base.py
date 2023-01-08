@@ -5,7 +5,6 @@ Base class for fetching data from Chess.com API and saving them to a file.
 import requests
 import json
 import pandas as pd
-from time import sleep
 
 from app.helpers.api_endpoints import REQUEST_HEADERS
 from app.utils.load_save_dataframe import load_dataframe, save_dataframe
@@ -40,14 +39,9 @@ class FetchBase:
         res = requests.get(url, headers=REQUEST_HEADERS)
         if res.status_code != 200:
             print(f"WARNING: Status code {res.status_code} for url: {url}.")
-            sleep(1)
             if res.status_code == 429:  # Rate limit
-                print("Sleeping for one minute.")
-                sleep(60)
-                res = requests.get(url, headers=REQUEST_HEADERS)
-                if res.status_code == 429:  # Rate limit
-                    print("Rate limit exceeded -> exiting.")
-                    exit(0)
+                print("Rate limit exceeded -> exiting.")
+                exit(0)
             return None
         return json.loads(res.text)
 
