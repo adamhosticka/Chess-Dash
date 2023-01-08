@@ -26,8 +26,8 @@ def render_app_layout(app: Dash, players_df: pd.DataFrame, games_df: pd.DataFram
                     html.Div(
                         style={"width": "75%", "margin": "auto"},
                         children=[
-                            game_layout(app, games_df),
                             player_layout(app, players_df),
+                            game_layout(app, games_df),
                         ]
                     )
                 ]

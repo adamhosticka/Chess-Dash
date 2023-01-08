@@ -23,7 +23,3 @@ class RatingsPerTimeClassAndStatus(GraphLayout):
             y='rating',
             color='status'
         )
-
-    @staticmethod
-    def set_text():
-        return html.P("As I expected, players with premium status would have higher rating across all time classes.")

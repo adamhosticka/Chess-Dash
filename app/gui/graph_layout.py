@@ -34,9 +34,6 @@ class GraphLayout:
         else:
             figure = self.get_figure()
             self.children.append(dcc.Graph(id=self.GRAPH_ID, figure=figure))
-        if self.set_text():
-            self.children.append(self.set_text())
-            self.children.extend([html.Br(), html.Br()])
 
         return html.Div(
             id=self.COMPONENT_ID,
@@ -68,8 +65,3 @@ class GraphLayout:
 
     def set_callback(self) -> None:
         """Set callback for graph components."""
-
-    @staticmethod
-    def set_text():
-        """Set text under graph."""
-        return None

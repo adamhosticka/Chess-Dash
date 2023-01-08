@@ -40,11 +40,6 @@ class ResultDistribution(GraphLayout):
 
             return fig
 
-    @staticmethod
-    def set_text():
-        return html.P("As expected, white has the edge in general. But I did expect longer games to end in a draw "
-                      "more frequently.")
-
     def get_figure(self) -> html.Div:
         # Disable pylint E1111
         raise NotImplementedError

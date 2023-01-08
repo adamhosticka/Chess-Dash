@@ -1,7 +1,6 @@
 """Graph for displaying correlation between rated games and mean rating of the game."""
 
 import plotly.express as px
-from dash import html
 
 from app.gui.graph_layout import GraphLayout
 from app.helpers.gui_config import GAME_COLOR
@@ -27,7 +26,3 @@ class RatedRatingCorrelation(GraphLayout):
         fig.update_traces(marker_color=GAME_COLOR, width=0.40)
 
         return fig
-
-    @staticmethod
-    def set_text():
-        return html.P("As expected, begginers are more likely to play non-rated games.")
