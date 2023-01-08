@@ -14,6 +14,10 @@ Run the following command and open the local host web address chosen by Dash.
 
 ``python3 ./index.py``
 
+Enter the debugging mode by running the following command.
+
+``python3 ./index.py -d``
+
 ## Fetching data from Chess.com API
 
 Run the following command to get information about how to fetch data.
