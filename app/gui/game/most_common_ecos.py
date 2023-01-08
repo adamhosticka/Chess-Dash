@@ -1,4 +1,4 @@
-""""""
+"""Pie graph displaying most common X chess openings."""
 
 from dash import html
 import plotly.express as px
@@ -9,6 +9,8 @@ from app.src.format_data.gui_format_games import get_most_common_ecos
 
 
 class MostCommonEcos(GraphLayout):
+    """Class for rendering a pie graph displaying most common X chess openings."""
+
     COMPONENT_ID = 'most-common-ecos'
     GRAPH_ID = 'most-common-ecos-graph'
     MOST_COMMON_CNT = 10

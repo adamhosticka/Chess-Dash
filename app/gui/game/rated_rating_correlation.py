@@ -1,4 +1,4 @@
-""""""
+"""Graph for displaying correlation between rated games and mean rating of the game."""
 
 import plotly.express as px
 
@@ -9,6 +9,7 @@ from app.utils.format_graph_labels import format_labels
 
 
 class RatedRatingCorrelation(GraphLayout):
+    """Class for displaying correlation between rated games and mean rating of the game."""
     COMPONENT_ID = 'rated-rating-correlation'
     GRAPH_ID = 'rated-rating-correlation-graph'
 

@@ -1,4 +1,4 @@
-""""""
+"""Config for Dash application."""
 
 import plotly.express as px
 

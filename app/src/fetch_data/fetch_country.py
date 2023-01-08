@@ -1,6 +1,4 @@
-"""
-Fetch countries information from Chess.com API and save it to a file.
-"""
+"""Fetch countries information from Chess.com API and save it to a file."""
 
 import pandas as pd
 
@@ -12,6 +10,8 @@ from app.utils.dataframe_utils import create_dataframe_from_list
 
 
 class FetchCountry(FetchBase):
+    """Fetch countries information from Chess.com API and save it to a file."""
+
     FILE_NAME = COUNTRIES_FILENAME
 
     def fetch_data(self) -> pd.DataFrame:

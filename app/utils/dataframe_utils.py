@@ -1,8 +1,8 @@
 """Utils for working with dataframes."""
 
 import os
-import pandas as pd
 from typing import Union
+import pandas as pd
 
 from app.helpers.paths import DATA_DIR
 
@@ -38,7 +38,7 @@ def dataframes_equal(df1: pd.DataFrame, df2: pd.DataFrame, sort_by: Union[str, l
     :rtype: bool.
     """
     if df1.empty or df2.empty:
-        return True if df1.empty and df2.empty else False
+        return df1.empty and df2.empty
     if sort_by is None:
         sort_by = []
     sorted_df1 = df1.sort_values(sort_by).reset_index(drop=True)

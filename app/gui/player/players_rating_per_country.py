@@ -1,4 +1,4 @@
-""""""
+"""Graph displaying players rating per country on a choropleth map."""
 
 from dash import html, Input, Output
 import plotly.express as px
@@ -11,6 +11,8 @@ from app.utils.format_graph_labels import format_labels
 
 
 class PlayersRatingPerCountry(GraphLayout):
+    """Class displaying players rating per country on a choropleth map."""
+
     COMPONENT_ID = 'players-rating-per-country'
     GRAPH_ID = 'players-rating-per-country-graph'
     CALLBACK = True
@@ -36,3 +38,7 @@ class PlayersRatingPerCountry(GraphLayout):
             )
 
             return fig
+
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError

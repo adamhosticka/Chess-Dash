@@ -1,4 +1,4 @@
-""""""
+"""File with games dash components."""
 
 import pandas as pd
 from dash import html, dcc
@@ -8,6 +8,14 @@ from app.src.format_data.gui_format_games import get_time_classes_and_checklist_
 
 
 def time_class_checklist(df: pd.DataFrame, parent_component_id: str) -> html.Div:
+    """Checklist with time classes from games dataframe.
+
+    :param: pd.DataFrame df: Dataframe containing games data.
+    :param: str parent_component_id: ID of parent component.
+    :return: Checklist component.
+    :rtype: html.Div.
+    """
+
     options, time_classes = get_time_classes_and_checklist_options(df)
     return html.Div(
         dcc.Checklist(

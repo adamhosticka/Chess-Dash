@@ -1,4 +1,4 @@
-""""""
+"""Graph for displaying correlation between player's status and ranking."""
 
 from dash import html, Input, Output
 import plotly.express as px
@@ -10,6 +10,7 @@ from app.src.format_data.gui_format_players import get_status_rating_correlation
 
 
 class StatusRatingCorrelation(GraphLayout):
+    """Class for displaying correlation between player's status and ranking."""
     COMPONENT_ID = 'status-rating-correlation'
     GRAPH_ID = 'status-rating-correlation-graph'
     CALLBACK = True
@@ -34,3 +35,7 @@ class StatusRatingCorrelation(GraphLayout):
             fig.update_traces(marker_color=PLAYER_COLOR, width=0.40)
 
             return fig
+
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError

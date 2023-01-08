@@ -1,3 +1,4 @@
+"""Columns to keep for player and their renamed version."""
 
 PLAYERS_KEEP_COLUMNS_RENAME = {
     'player_id': 'player_id',

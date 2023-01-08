@@ -1,6 +1,4 @@
-"""
-Fetch usernames from each country from Chess.com API and save it to a file.
-"""
+"""Fetch usernames from each country from Chess.com API and save it to a file."""
 
 import os
 import pandas as pd
@@ -13,6 +11,7 @@ from app.utils.dataframe_utils import load_dataframe, create_dataframe_from_list
 
 
 class FetchCountryPlayer(FetchBase):
+    """Fetch usernames from each country from Chess.com API and save it to a file."""
     FILE_NAME = PLAYERS_FILENAME
 
     def __init__(self):

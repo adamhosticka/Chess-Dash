@@ -1,6 +1,6 @@
-""""""
+"""Graph for displaying result distribution."""
 
-from dash import Input, Output
+from dash import Input, Output, html
 import plotly.express as px
 
 from app.gui.graph_layout import GraphLayout
@@ -11,6 +11,7 @@ from app.utils.format_graph_labels import format_labels
 
 
 class ResultDistribution(GraphLayout):
+    """Class for displaying result distribution."""
     COMPONENT_ID = 'result-distribution'
     GRAPH_ID = 'result-distribution-graph'
     CALLBACK = True
@@ -33,8 +34,12 @@ class ResultDistribution(GraphLayout):
                 color='result',
                 hover_data=['count'],
                 barmode='group',
-                title=f"Result distribution for selected time classes",
+                title="Result distribution for selected time classes",
                 labels=format_labels(['time_class']),
             )
 
             return fig
+
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError

@@ -1,9 +1,9 @@
-""""""
+"""Graphs for displaying correlation between rating and other paramters."""
 
-from dash import Dash, html, Input, Output
+from datetime import datetime
 import plotly.express as px
 import pandas as pd
-from datetime import datetime
+from dash import Dash, html, Input, Output
 
 from app.gui.graph_layout import GraphLayout
 from app.gui.player.dash_components import time_class_selector
@@ -12,6 +12,7 @@ from app.utils.format_graph_labels import format_labels
 
 
 class RatingCorrelation(GraphLayout):
+    """Class for displaying correlation between rating and other paramters."""
     CALLBACK = True
     CORR = ""
 
@@ -34,20 +35,38 @@ class RatingCorrelation(GraphLayout):
 
             return figure
 
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError
+
 
 class TacticsRatingCorrelation(RatingCorrelation):
+    """Class for displaying correlation between rating and tactics."""
+
     COMPONENT_ID = 'tactics-rating-correlation'
     GRAPH_ID = 'tactics-rating-correlation-graph'
     CORR = 'tactics_highest_rating'
 
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError
+
 
 class PuzzleRatingCorrelation(RatingCorrelation):
+    """Class for displaying correlation between rating and puzzles."""
+
     COMPONENT_ID = 'puzzle-rating-correlation'
     GRAPH_ID = 'puzzle-rating-correlation-graph'
     CORR = 'puzzle_rush_best_score'
 
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError
+
 
 class JoinedRatingCorrelation(RatingCorrelation):
+    """Class for displaying correlation between rating and time since joined."""
+
     COMPONENT_ID = 'joined-rating-correlation'
     GRAPH_ID = 'joined-rating-correlation-graph'
     CORR = 'days_since_joined'
@@ -59,8 +78,18 @@ class JoinedRatingCorrelation(RatingCorrelation):
             (datetime.today() - pd.to_datetime(df_days_since_joined['joined'], unit="s")).astype('timedelta64[h]') / 24
         self.df = df_days_since_joined
 
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError
+
 
 class FollowersRatingCorrelation(RatingCorrelation):
+    """Class for displaying correlation between rating and player's followers."""
+
     COMPONENT_ID = 'followers-rating-correlation'
     GRAPH_ID = 'followers-rating-correlation-graph'
     CORR = 'followers'
+
+    def get_figure(self) -> html.Div:
+        # Disable pylint E1111
+        raise NotImplementedError

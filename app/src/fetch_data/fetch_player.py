@@ -12,6 +12,10 @@ from app.utils.dataframe_utils import load_dataframe
 
 
 class FetchPlayer(FetchBase):
+    """
+    Fetch players details and stats from Chess.com API, merge ot with already saved player and save it to a file.
+    """
+
     FILE_NAME = PLAYERS_FILENAME
     KEEP_COLUMNS_RENAME = PLAYERS_KEEP_COLUMNS_RENAME
 
@@ -46,9 +50,9 @@ class FetchPlayer(FetchBase):
 
         if original_players_plain:
             return pd.merge(self.players, res, how='outer')
-        else:
-            res = pd.merge(self.players, res, how='outer')
-            return res[~(
-                      res.duplicated(subset='username', keep=False) &
-                      res['player_id'].isna()
-            )]
+
+        res = pd.merge(self.players, res, how='outer')
+        return res[~(
+                  res.duplicated(subset='username', keep=False) &
+                  res['player_id'].isna()
+        )]

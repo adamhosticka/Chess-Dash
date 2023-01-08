@@ -65,6 +65,7 @@ def extract_features_from_pgn(df: pd.DataFrame) -> pd.DataFrame:
     feature_names = ['start_date', 'end_date', 'start_time', 'end_time', 'eco', 'eco_url', 'result']
     feature_positions = [2, -6, -7, -5, -15, -14, 6]
 
+    # pylint detects W0640...
     for feature_name, position in zip(feature_names, feature_positions):
         df[feature_name] = df['pgn'].apply(
             lambda x: x.split('\n')[position].split('"')[1])
@@ -130,12 +131,10 @@ def extract_time_and_increment(time_control: str) -> tuple:
     """
     if time_control[:2] == '1/':
         return 1, 0
-    else:
-        splitted = time_control.split('+')
-        if len(splitted) == 1:
-            return int(splitted[0]), 0
-        else:
-            return int(time_control.split('+')[0]), int(time_control.split('+')[1])
+    splitted = time_control.split('+')
+    if len(splitted) == 1:
+        return int(splitted[0]), 0
+    return int(time_control.split('+')[0]), int(time_control.split('+')[1])
 
 
 def unite_results(df: pd.DataFrame) -> pd.DataFrame:

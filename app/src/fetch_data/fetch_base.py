@@ -1,16 +1,17 @@
-"""
-Base class for fetching data from Chess.com API and saving them to a file.
-"""
+"""Base class for fetching data from Chess.com API and saving them to a file."""
 
-import requests
+import sys
 import json
 import pandas as pd
+import requests
 
 from app.helpers.api_endpoints import REQUEST_HEADERS
-from app.utils.dataframe_utils import load_dataframe, save_dataframe
+from app.utils.dataframe_utils import save_dataframe
 
 
 class FetchBase:
+    """Base class for fetching data from Chess.com API and saving them to a file."""
+
     FILE_NAME = None
 
     dataframe = pd.DataFrame()
@@ -26,7 +27,8 @@ class FetchBase:
         :return: Dataframe with fetched data.
         :rtype: pd.DataFrame.
         """
-        pass
+        # Disable pylint E1111
+        raise NotImplementedError
 
     @staticmethod
     def fetch_item(url: str) -> dict:
@@ -36,12 +38,12 @@ class FetchBase:
         :return: API response item.
         :rtype: dict.
         """
-        res = requests.get(url, headers=REQUEST_HEADERS)
+        res = requests.get(url, headers=REQUEST_HEADERS, timeout=10)
         if res.status_code != 200:
             print(f"WARNING: Status code {res.status_code} for url: {url}.")
             if res.status_code == 429:  # Rate limit
                 print("Rate limit exceeded -> exiting.")
-                exit(0)
+                sys.exit(1)
             return None
         return json.loads(res.text)
 

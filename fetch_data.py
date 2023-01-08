@@ -10,10 +10,26 @@ from app.src.fetch_data.fetch_player import FetchPlayer
 from app.src.format_data.reformat_games import save_reformated_games
 
 
+def get_data_class_name(data_class) -> str:
+    """Get data class name.
+
+    :param: data_class: Data class.
+    :return: Data class name.
+    :rtype: str.
+    """
+    return str(data_class).rsplit('.', maxsplit=1)[-1][:-2]
+
+
 def fetch_item(data_class, print_info: bool, cnt: int = 1):
+    """Fetch data by data_class class.
+
+    :param: data_class: Fetching data class.
+    :param: bool print_info: Print info if True.
+    :param: int cnt: How many times to call data_class.run().
+    """
     start_time = time.time()
     if print_info:
-        print(f"Fetching {str(data_class).split('.')[-1][:-2]}")
+        print(f"Fetching {get_data_class_name(data_class)}")
     for i in range(cnt):
         if print_info and cnt != 1:
             print(f"{i + 1}. stovka.")
@@ -23,7 +39,7 @@ def fetch_item(data_class, print_info: bool, cnt: int = 1):
             if print_info:
                 print(f"Skoncila s chybou {repr(e)}.")
     if print_info:
-        print(f"Fetching {str(data_class).split('.')[-1][:-2]} took {time.time() - start_time} seconds")
+        print(f"Fetching {get_data_class_name(data_class)} took {time.time() - start_time} seconds")
 
 
 def fetch_data(fetch_all_and_reformat: bool, fetch_countries: bool, fetch_country_players: bool,
@@ -82,14 +98,14 @@ if __name__ == '__main__':
                         help="Fetch country players")
     parser.add_argument("-FP", "--hundreds-of-players",
                         default=0,
-                        choices=range(0, 51),
+                        choices=range(0, 101),
                         type=int,
                         help="Number of hundreds of players to fetch")
     parser.add_argument("-FG", "--hundreds-of-games",
                         default=0,
                         choices=range(0, 51),
                         type=int,
-                        help="Number of hundreds of games to fetch")
+                        help="Number of hundreds of players to fetch games from (each player can have multiple games)")
     parser.add_argument("-r", "--reformat-and-save",
                         default=False,
                         action='store_true',

@@ -1,4 +1,4 @@
-""""""
+"""Bar graph displaying result type count and winner."""
 
 from dash import html
 import plotly.express as px
@@ -10,6 +10,7 @@ from app.utils.format_graph_labels import format_labels
 
 
 class ResultTypeCount(GraphLayout):
+    """Class rendering a bar graph displaying result type count and winner."""
     COMPONENT_ID = 'result-type-count'
     GRAPH_ID = 'result-type-count-graph'
 
@@ -24,7 +25,7 @@ class ResultTypeCount(GraphLayout):
             color='result',
             text='result',
             labels=labels,
-            title=f"Result type count",
+            title="Result type count",
             color_discrete_sequence=SEQUENTIAL_COLOR,
         )
         # fig.update_traces(marker_color='#1a6c75', width=0.8)

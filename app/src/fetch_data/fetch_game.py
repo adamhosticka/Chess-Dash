@@ -11,6 +11,10 @@ from app.utils.dataframe_utils import load_dataframe, save_dataframe
 
 
 class FetchGame(FetchBase):
+    """
+    Fetch games played by saved players from Chess.com API,
+    merge them with already saved games and save all games to file.
+    """
     FILE_NAME = GAMES_FILENAME
 
     def __init__(self, fetch_from_players_cnt: int = 100, year: int = 2022, month: int = 12):

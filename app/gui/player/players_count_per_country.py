@@ -1,4 +1,4 @@
-""""""
+"""Graph for displaying players count per coutnry on a choropleth map."""
 
 from dash import html
 import plotly.express as px
@@ -8,6 +8,8 @@ from app.src.format_data.gui_format_players import get_players_count_and_rating_
 
 
 class PlayersCountPerCountry(GraphLayout):
+    """Class for displaying players count per coutnry on a choropleth map."""
+
     COMPONENT_ID = 'players-count-per-country'
     GRAPH_ID = 'players-count-per-country-graph'
     GRAPH_WIDTH_PERCENT = 80

@@ -12,6 +12,13 @@ from app.src.format_data.gui_format_players import convert_alpha2_code_to_alpha3
 
 
 def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
+    """Layout for player statistics.
+
+    :param: Dash app: Dash application.
+    :param: pd.DataFrame df: Dataframe with players data.
+    :return: Player layout.
+    :rtype: html.Div.
+    """
 
     df['country'] = df['country_code'].apply(convert_alpha2_code_to_alpha3)
     df = df[df['player_id'].notna()]

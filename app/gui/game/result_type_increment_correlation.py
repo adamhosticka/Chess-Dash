@@ -1,4 +1,4 @@
-""""""
+"""Graph displaying correlation between increment and result_type."""
 
 from dash import html
 import plotly.express as px
@@ -7,7 +7,9 @@ from app.gui.graph_layout import GraphLayout
 from app.src.format_data.gui_format_games import get_result_type_increment_correlation
 
 
-class TimeoutIncrementCorrelation(GraphLayout):
+class ResultTypeIncrementCorrelation(GraphLayout):
+    """Class displaying correlation between increment and result_type."""
+
     COMPONENT_ID = 'timeout-increment-correlation'
     GRAPH_ID = 'timeout-increment-correlation-graph'
 
