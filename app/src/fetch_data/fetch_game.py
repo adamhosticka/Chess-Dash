@@ -6,7 +6,7 @@ import pandas as pd
 
 from app.helpers.api_endpoints import PLAYER_GAMES_MONTH
 from app.helpers.data_filenames import GAMES_FILENAME, PLAYERS_FILENAME
-from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
+from app.src.fetch_data.fetch_base import FetchBase
 
 
 class FetchGame(FetchBase):

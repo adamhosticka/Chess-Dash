@@ -1,4 +1,4 @@
-"""Reformat games from official Chess.com API format.
+"""Reformat games from official Chess.com API format and save them.
 Inspired/copied from https://www.kaggle.com/code/adityajha1504/those-features-won-t-engineer-themselves/notebook.
 """
 
@@ -7,6 +7,13 @@ import pandas as pd
 
 from app.helpers.data_filenames import GAMES_FILENAME, REFORMATED_GAMES_FILENAME
 from app.utils.load_save_dataframe import load_dataframe, save_dataframe
+
+
+def save_reformated_games():
+    """Save reformated games"""
+    games = load_dataframe(GAMES_FILENAME)
+    reformated_games = reformat_games(games)
+    save_dataframe(reformated_games, REFORMATED_GAMES_FILENAME)
 
 
 def reformat_games(games_df: pd.DataFrame) -> pd.DataFrame:
@@ -144,9 +151,3 @@ def unite_results(df: pd.DataFrame) -> pd.DataFrame:
     df['result'] = df['result'].apply(
         lambda x: 'Black' if x == '0-1' else ('White' if x == '1-0' else 'Draw'))
     return df.drop(columns=['white_result', 'black_result'])
-
-
-if __name__ == '__main__':
-    games = load_dataframe(GAMES_FILENAME)
-    reformated_games = reformat_games(games)
-    # save_dataframe(reformated_games, REFORMATED_GAMES_FILENAME)

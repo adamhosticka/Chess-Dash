@@ -6,7 +6,7 @@ import pandas as pd
 
 from app.helpers.api_endpoints import PLAYER_PROFILE_ENDPOINT, PLAYER_STATS_ENDPOINT
 from app.helpers.players_keep_columns_rename import PLAYERS_KEEP_COLUMNS_RENAME
-from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
+from app.src.fetch_data.fetch_base import FetchBase
 from app.helpers.data_filenames import PLAYERS_FILENAME
 
 

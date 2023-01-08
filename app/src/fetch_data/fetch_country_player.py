@@ -1,5 +1,5 @@
 """
-Fetch username for each country from Chess.com API and save it to a file.
+Fetch usernames from each country from Chess.com API and save it to a file.
 """
 
 import os
@@ -7,7 +7,7 @@ import pandas as pd
 
 from app.helpers.paths import DATA_DIR
 from app.helpers.api_endpoints import COUNTRY_PLAYERS_ENDPOINT
-from app.src.fetch_data_from_chesscom_api.fetch_base import FetchBase
+from app.src.fetch_data.fetch_base import FetchBase
 from app.helpers.data_filenames import PLAYERS_FILENAME, COUNTRIES_FILENAME
 
 

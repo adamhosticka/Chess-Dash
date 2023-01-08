@@ -22,7 +22,7 @@ class FetchBase:
         self._save_data()
 
     def fetch_data(self):
-        """Call fetch_item, modify the return value and save it to data."""
+        """Call fetch_item, modify the return value and save it to dataframe."""
         pass
 
     @staticmethod
