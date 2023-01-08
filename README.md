@@ -3,6 +3,11 @@
 ## Summary
 Fetch data from Chess.com API and visualize them in a Dash application.
 
+## Install python dependencies
+
+Install all python dependencies by running
+``pip install -r requirements.txt``
+
 ## Running the application
 
 Run the following command and open the local host web address chosen by Dash.
