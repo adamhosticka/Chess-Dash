@@ -45,8 +45,23 @@ from app.utils.compare_dataframes import dataframes_equal
             }),
             ['count', 'type'],
             True
-        )
+        ),
+        (
+            pd.DataFrame(),
+            pd.DataFrame(),
+            None,
+            True
+        ),
+        (
+            pd.DataFrame(),
+            pd.DataFrame([1, 2]),
+            None,
+            False
+        ),
     ]
 )
 def test_dataframes_equal(df1: pd.DataFrame, df2: pd.DataFrame, sort_by: Union[str, list], expected: bool):
-    assert dataframes_equal(df1, df2, sort_by) == expected
+    if sort_by:
+        assert dataframes_equal(df1, df2, sort_by) == expected
+    else:
+        assert dataframes_equal(df1, df2) == expected
