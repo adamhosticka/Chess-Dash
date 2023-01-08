@@ -62,3 +62,22 @@ def get_status_rating_correlation(df: pd.DataFrame, time_class: str, statuses: l
     """
     dff = df[df['status'].isin(statuses)]
     return dff.groupby('status')[time_class].mean().reset_index()
+
+
+def get_ratings_per_time_class_and_status(df: pd.DataFrame) -> pd.DataFrame:
+    """Get status rating correlation for time_class and statuses.
+
+    :param: pd.DataFrame df: Dataframe with columns status and one of chess `time_class` (rating).
+    :param: str time_class: Chess time_class rating with Chess.com API format.
+    :param: list statuses: Selected statuses.
+    :return: Dataframe grouped by country with columns number of players and `time_class` (rating mean).
+    :rtype: pd.DataFrame.
+    """
+    df = df[df['status'].isin(['basic', 'premium'])]
+    return pd.melt(
+        df,
+        id_vars=['username', 'status'],
+        value_vars=['daily_rating', 'blitz_rating', 'rapid_rating', 'bullet_rating'],
+        var_name='time class',
+        value_name='rating'
+    )

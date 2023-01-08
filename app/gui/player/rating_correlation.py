@@ -81,15 +81,3 @@ class JoinedRatingCorrelation(RatingCorrelation):
     def get_figure(self) -> html.Div:
         # Disable pylint E1111
         raise NotImplementedError
-
-
-class FollowersRatingCorrelation(RatingCorrelation):
-    """Class for displaying correlation between rating and player's followers."""
-
-    COMPONENT_ID = 'followers-rating-correlation'
-    GRAPH_ID = 'followers-rating-correlation-graph'
-    CORR = 'followers'
-
-    def get_figure(self) -> html.Div:
-        # Disable pylint E1111
-        raise NotImplementedError

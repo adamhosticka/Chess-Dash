@@ -5,9 +5,10 @@ from dash import Dash, html
 
 from app.gui.player.players_count_per_country import PlayersCountPerCountry
 from app.gui.player.players_rating_per_country import PlayersRatingPerCountry
+from app.gui.player.ratings_per_time_class_and_status import RatingsPerTimeClassAndStatus
 from app.gui.player.status_rating_correlation import StatusRatingCorrelation
 from app.gui.player.rating_correlation import \
-    TacticsRatingCorrelation, PuzzleRatingCorrelation, JoinedRatingCorrelation, FollowersRatingCorrelation
+    TacticsRatingCorrelation, PuzzleRatingCorrelation, JoinedRatingCorrelation
 from app.src.format_data.gui_format_players import convert_alpha2_code_to_alpha3
 
 
@@ -32,13 +33,14 @@ def player_layout(app: Dash, df: pd.DataFrame) -> html.Div:
             html.Hr(),
             html.Div(
                 children=[
+                    RatingsPerTimeClassAndStatus(app, df).render(),
                     PlayersCountPerCountry(app, df).render(),
                     PlayersRatingPerCountry(app, df).render(),
-                    StatusRatingCorrelation(app, df).render(),
                     TacticsRatingCorrelation(app, df).render(),
                     PuzzleRatingCorrelation(app, df).render(),
                     JoinedRatingCorrelation(app, df).render(),
-                    FollowersRatingCorrelation(app, df).render(),
+                    html.H1("Entering trash zone"),
+                    StatusRatingCorrelation(app, df).render(),
                 ]
             )
         ]
